@@ -1,6 +1,22 @@
 #include <iostream>
 #include <cstring>
+#include <stdlib.h>
 
+char * MakeStrAdtr(int len)
+{
+	//char * str = (char*)malloc(sizeof(char)*len);
+	char * str = new char[len];
+	return str;
+}
+
+//#define SQUARE(x) ((x)*(x))
+
+template <typename T>
+
+inline T SQUARE(T x)
+{
+	return x * x;
+}
 namespace AAA
 {
 	namespace BBB
@@ -40,6 +56,22 @@ void MyFunc(int a, int b)
 
 int main(void)
 {
+	char * str = MakeStrAdtr(20);
+	strcpy(str, "I am tired");
+	std::cout << str << std::endl;
+	delete(str);
+
+
+	/* boolean
+	std::cout << "true : " << true << std::endl;
+	std::cout << "false : " << false << std::endl;
+
+	/*
+	std::cout << SQUARE(5) << std::endl;
+			//-> ((5)*(5))
+	std::cout << SQUARE(5.5) << std::endl;
+			
+	/*
 	AAA::BBB::CCC::num1 = 20;
 	AAA::BBB::CCC::num2 = 30;
 
