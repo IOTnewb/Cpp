@@ -8,7 +8,7 @@ int main(void)
 
 	int num = 12;
 	int *ptr = &num;
-
+	int **dptr = &ptr;
 
 
 	/* 배열요소 대상 참조자
