@@ -2,6 +2,70 @@
 
 using namespace std;
 
+// 자 동 차 ( 소유자,연료량,현재속도 )
+namespace CAR_CONST
+{
+//	const int ID_LEN = 20; // 열거자 쓰기 싫으면 사용
+	enum 
+	{
+		ID_LEN			= 20,
+		MAX_SPEED	= 200,
+		FUEL_STEP	= 2,
+		ACC_STEP		= 10,
+		BRK_STEP		= 10
+	};
+	
+}
+/*
+#define ID_LEN  20
+#define MAX_SPEED  200
+#define FUEL_STEP  2
+#define ACC_STEP  10
+#define BRK_STEP  10
+*/
+struct Car
+{
+	char gamerID[CAR_CONST::ID_LEN];
+	int fuelGauge;
+	int curSpeed;
+
+	void ShowCarstate()
+	{
+		cout << "소유자 : " << gamerID << endl;
+		cout << "연료량 : " << fuelGauge << endl;
+		cout << "속   도 : " << curSpeed << endl;
+	};
+
+	void Accel()
+	{
+		//연료량 체크
+		if (fuelGauge <= 0)
+			return;
+		else
+			fuelGauge -= CAR_CONST::FUEL_STEP;
+		//최대 속도 체크
+		if (curSpeed + CAR_CONST::ACC_STEP >= CAR_CONST::MAX_SPEED)
+		{
+			curSpeed = CAR_CONST::MAX_SPEED;
+			return;
+		}
+
+		curSpeed += CAR_CONST::ACC_STEP;
+	};
+
+	void Break()
+	{
+		if (curSpeed < CAR_CONST::BRK_STEP)
+		{
+			curSpeed = 0;
+			return;
+		}
+		curSpeed -= CAR_CONST::BRK_STEP;
+	}
+
+};
+
+/*
 void SwapByRef(int &ref1, int &ref2)
 {
 	int temp = ref1;
@@ -14,10 +78,27 @@ int& RefRetFuncOne(int &ref)
 	ref++;
 	return ref;
 }
+*/
 
 int main(void)
 {
-	// 반환형이 참조자인 경우
+	// Car 구조체 사용 초기화
+	Car run9 = { "run9", 100, 0 };
+	run9.Accel();
+	run9.Accel();
+	run9.Accel();
+	run9.ShowCarstate();
+	run9.Break();
+	run9.ShowCarstate();
+
+
+	Car run8 = { "run8", 100, 0 };
+	run8.Accel();
+	run8.Accel();
+	run8.Break();
+	run8.ShowCarstate();
+
+	/* 반환형이 참조자인 경우
 	int num2 = 1;
 	int &num3 = RefRetFuncOne(num2);
 	// int &num3 = num2;
