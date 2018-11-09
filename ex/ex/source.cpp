@@ -2,7 +2,7 @@
 #include <cstring>
 #include <stdlib.h>
 
-char * MakeStrAdtr(int len)
+char * MakeStrAdtr(int len)		// C++ MemoryAllocation
 {
 	//char * str = (char*)malloc(sizeof(char)*len);
 	char * str = new char[len];
