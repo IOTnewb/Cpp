@@ -1,22 +1,76 @@
-#include <iostream>
-#include <cstring>
+#include "Car.h"
 
+/* 자 동 차 ( 소유자,연료량,현재속도 )
 using namespace std;
-
-// 자 동 차 ( 소유자,연료량,현재속도 )
 namespace CAR_CONST
 {
-//	const int ID_LEN = 20; // 열거자 쓰기 싫으면 사용
-	enum 
+	//	const int ID_LEN = 20; // 열거자 쓰기 싫으면 사용
+	enum
 	{
-		ID_LEN			= 20,
-		MAX_SPEED	= 200,
-		FUEL_STEP	= 2,
-		ACC_STEP		= 10,
-		BRK_STEP		= 10
+		ID_LEN = 20,
+		MAX_SPEED = 200,
+		FUEL_STEP = 2,
+		ACC_STEP = 10,
+		BRK_STEP = 10
 	};
-	
+
 }
+
+class Car
+	{
+	public:
+		void InitMember(const char *ID, int fuel);
+		void ShowCarstate();
+		void Accel();
+		void Break();
+	private:
+		char gamerID[CAR_CONST::ID_LEN];
+		int fuelGauge;
+		int curSpeed;
+	};
+
+	void Car::InitMember(const char *ID, int fuel)
+	{
+	strcpy(gamerID, ID);
+	fuelGauge = fuel;
+	curSpeed = 0;
+	}
+
+	void Car::ShowCarstate()
+	{
+	cout << "소유자 : " << gamerID << endl;
+	cout << "연료량 : " << fuelGauge << endl;
+	cout << "속   도 : " << curSpeed << endl;
+	};
+
+	void Car::Accel()
+	{
+	//연료량 체크
+	if (fuelGauge <= 0)
+	return;
+	else
+	fuelGauge -= CAR_CONST::FUEL_STEP;
+	//최대 속도 체크
+	if(curSpeed + CAR_CONST::ACC_STEP >= CAR_CONST::MAX_SPEED)
+	{
+	curSpeed = CAR_CONST::MAX_SPEED;
+	return;
+	}
+
+	curSpeed += CAR_CONST::ACC_STEP;
+	};
+
+	void Car::Break()
+	{
+	if (curSpeed < CAR_CONST::BRK_STEP)
+	{
+	curSpeed = 0;
+	return;
+	}
+	curSpeed -= CAR_CONST::BRK_STEP;
+	}
+
+
 /*
 #define ID_LEN  20
 #define MAX_SPEED  200
@@ -38,61 +92,9 @@ namespace CAR_CONST
 
 */
 
-class Car
-{
-public:
-	void InitMember(const char *ID, int fuel);
-	void ShowCarstate();
-	void Accel();
-	void Break();
-private:
-	char gamerID[CAR_CONST::ID_LEN];
-	int fuelGauge;
-	int curSpeed;
 
-	
-};
 
-void Car::InitMember(const char *ID, int fuel)
-{
-	strcpy(gamerID, ID);
-	fuelGauge = fuel;
-	curSpeed = 0;
-}
 
-void Car::ShowCarstate()
-{
-	cout << "소유자 : " << gamerID << endl;
-	cout << "연료량 : " << fuelGauge << endl;
-	cout << "속   도 : " << curSpeed << endl;
-};
-
-void Car::Accel()
-{
-	//연료량 체크
-	if (fuelGauge <= 0)
-		return;
-	else
-		fuelGauge -= CAR_CONST::FUEL_STEP;
-	//최대 속도 체크
-	if (curSpeed + CAR_CONST::ACC_STEP >= CAR_CONST::MAX_SPEED)
-	{
-		curSpeed = CAR_CONST::MAX_SPEED;
-		return;
-	}
-
-	curSpeed += CAR_CONST::ACC_STEP;
-};
-
-void Car::Break()
-{
-	if (curSpeed < CAR_CONST::BRK_STEP)
-	{
-		curSpeed = 0;
-		return;
-	}
-	curSpeed -= CAR_CONST::BRK_STEP;
-}
 
 /*
 void SwapByRef(int &ref1, int &ref2)
