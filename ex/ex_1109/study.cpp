@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -23,47 +24,75 @@ namespace CAR_CONST
 #define ACC_STEP  10
 #define BRK_STEP  10
 */
-struct Car
+
+/*
+	Car 구조체 -> 클래스
+	1. 캡슐화(정보은닉, 범위)
+		- 정보은닉
+			( 접근 제어 지시자 )
+			public,		 어디서든 접근가능
+			private,		 클래스 내에서만 접근 가능
+			protected	 상속관계에서만 접근 가능
+		- 범위설정 ( 겁 나 어 렵 습 니 다 )
+			개발자의 분석 후 정의하기 나름
+
+*/
+
+class Car
 {
+public:
+	void InitMember(const char *ID, int fuel);
+	void ShowCarstate();
+	void Accel();
+	void Break();
+private:
 	char gamerID[CAR_CONST::ID_LEN];
 	int fuelGauge;
 	int curSpeed;
 
-	void ShowCarstate()
-	{
-		cout << "소유자 : " << gamerID << endl;
-		cout << "연료량 : " << fuelGauge << endl;
-		cout << "속   도 : " << curSpeed << endl;
-	};
+	
+};
 
-	void Accel()
-	{
-		//연료량 체크
-		if (fuelGauge <= 0)
-			return;
-		else
-			fuelGauge -= CAR_CONST::FUEL_STEP;
-		//최대 속도 체크
-		if (curSpeed + CAR_CONST::ACC_STEP >= CAR_CONST::MAX_SPEED)
-		{
-			curSpeed = CAR_CONST::MAX_SPEED;
-			return;
-		}
+void Car::InitMember(const char *ID, int fuel)
+{
+	strcpy(gamerID, ID);
+	fuelGauge = fuel;
+	curSpeed = 0;
+}
 
-		curSpeed += CAR_CONST::ACC_STEP;
-	};
+void Car::ShowCarstate()
+{
+	cout << "소유자 : " << gamerID << endl;
+	cout << "연료량 : " << fuelGauge << endl;
+	cout << "속   도 : " << curSpeed << endl;
+};
 
-	void Break()
+void Car::Accel()
+{
+	//연료량 체크
+	if (fuelGauge <= 0)
+		return;
+	else
+		fuelGauge -= CAR_CONST::FUEL_STEP;
+	//최대 속도 체크
+	if (curSpeed + CAR_CONST::ACC_STEP >= CAR_CONST::MAX_SPEED)
 	{
-		if (curSpeed < CAR_CONST::BRK_STEP)
-		{
-			curSpeed = 0;
-			return;
-		}
-		curSpeed -= CAR_CONST::BRK_STEP;
+		curSpeed = CAR_CONST::MAX_SPEED;
+		return;
 	}
 
+	curSpeed += CAR_CONST::ACC_STEP;
 };
+
+void Car::Break()
+{
+	if (curSpeed < CAR_CONST::BRK_STEP)
+	{
+		curSpeed = 0;
+		return;
+	}
+	curSpeed -= CAR_CONST::BRK_STEP;
+}
 
 /*
 void SwapByRef(int &ref1, int &ref2)
@@ -83,7 +112,8 @@ int& RefRetFuncOne(int &ref)
 int main(void)
 {
 	// Car 구조체 사용 초기화
-	Car run9 = { "run9", 100, 0 };
+	Car run9;
+	run9.InitMember("run9", 100);
 	run9.Accel();
 	run9.Accel();
 	run9.Accel();
@@ -92,7 +122,8 @@ int main(void)
 	run9.ShowCarstate();
 
 
-	Car run8 = { "run8", 100, 0 };
+	Car run8;// = { "run8", 100, 0 };
+	run8.InitMember("run8", 100);
 	run8.Accel();
 	run8.Accel();
 	run8.Break();
