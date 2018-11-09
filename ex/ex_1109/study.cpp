@@ -4,7 +4,10 @@ using namespace std;
 
 int main(void)
 {
+	//포인터 변수를 대상으로 한 참조자
 
+	int num = 12;
+	int *ptr = &num;
 
 
 
