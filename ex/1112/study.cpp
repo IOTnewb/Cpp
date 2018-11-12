@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 /*
@@ -21,26 +22,112 @@ using namespace std;
 	감기 환자와 감기 약
 */
 
+/* 소 멸 자 */
+class Person
+{
+private:
+	char *name;
+	int age;
+public:
+	// constructor
+	Person(char *myName, int myAge)
+	{
+		int len = strlen(myName) + 1;
+		name = new char[len];
+		strcpy(name, myName);
+		age = myAge;
+	}
+	//출 력 함 수
+	void ShowPersonInfo()
+	{
+		cout << "이 름 : " << name << endl;
+		cout << "나 이 : " << age << endl;
+	}
+	// destructor
+	~Person()
+	{
+		delete[]name;
+	}
+};
+
+
+/* 객 체 배 열 */
+
+/* this pointer */
+
+/* 과 제 2 번 */
+
+/* 캡슐화 - 범위(감기환자, 감기약);*/
+
+// 종합 갬기약
+
+
+//콧물 약 케슐
+class SinivelCap
+{
+public:
+	void Take()
+	{
+		cout << "콧물이 멈춰" << endl;
+	}
+};
+//재채기약 캡슐
+class SneezeCap
+{
+public:
+	void Take()
+	{
+		cout << "재채기가 멈춰" << endl;
+	}
+};
+
+//코막힘 약 캡슐
+class SnuffCap
+{
+public:
+	void Take()
+	{
+		cout << "코가 뚫려" << endl;
+	}
+};
+
+
+class compact600
+{
+private:
+	SinivelCap scap;
+	SneezeCap snecap;
+	SnuffCap snucap;
+public:
+	void Take()
+	{
+		scap.Take();
+		snecap.Take();
+		snucap.Take();
+	}
+};
+
 class Cold
 {
-	int nose;	// 코막
-	int couph;	// 
-	int close;
-	int heat;
-
 public:
-	Cold(int nose_, int couph_, int close_, int heat_)				// 환자의 증세 초기화
+	//콧물 감기약 복용
+	void TakeSinivelCap(SinivelCap &cap)
 	{
-		nose = nose_;
-		couph = couph_;
-		close = close_;
-		heat = heat_;
+		cap.Take();
 	}
-	
-	void requestmed(med &med)		// 증세에 따른 약 요청
+	void TakeSneezeCap(SneezeCap &cap)
 	{
-		med.prescribe(nose,couph,close,heat);
+		cap.Take();
 	}
+	void TakeSnuffCap(SnuffCap &cap)
+	{
+		cap.Take();
+	}
+	void TakeCompactCap(compact600 &cap)
+	{
+		cap.Take();
+	}
+
 };
 
 class med
@@ -54,7 +141,27 @@ class med
 public:
 	void prescribe(int nose, int couph, int close, int heat)					// 증세에 맞는 약 처방
 	{
-		
+		if (nose)
+		{
+			nosemed++;
+			cout << "콧물 약 처방" << endl;
+		}
+		if (couph)
+		{
+			couphmed++;
+			cout << "기침 약 처방" << endl;
+		}
+		if (close)
+		{
+			closemed++;
+			cout << "코막힘 약 처방" << endl;
+		}
+		if (heat)
+		{
+			heatmed++;
+			cout << "해열제 처방" << endl;
+		}
+
 	}
 };
 
@@ -130,8 +237,25 @@ public:
 
 int main(void)
 {
+	/* 캡 슐 화 - 범 위 */
+	SinivelCap sp;
+	SneezeCap snp;
+	SnuffCap snup;
+	compact600 comcap;
+
+	Cold patient;
+
+	patient.TakeSinivelCap(sp);
+	patient.TakeSneezeCap(snp);
+	patient.TakeSnuffCap(snup);
+
+	patient.TakeCompactCap(comcap);
+
+	/*
 	FruitSeller seller(1000, 20, 0);
 	FruitBuyer buyer(5000);
+
+	
 
 	//사과 거래 발생
 	buyer.BuyApples(seller, 2000);
@@ -141,5 +265,6 @@ int main(void)
 	seller.ShowSalesResult();
 	cout << "과일 구매자 현황" << endl;
 	buyer.ShowMyResult();
+	*/
 	return 0;
 }
