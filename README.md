@@ -1,7 +1,7 @@
 # Cpp
-IoT Cpp study - Learning OOP(Object Oriented Programming
+IoT Cpp study - Learning OOP(Object Oriented Programming)
 
-2018-11-01 ~
+2018-11-01 ~ (keep editing)
 
 연습_ 
 - input, output(cin, cout)
@@ -14,7 +14,7 @@ IoT Cpp study - Learning OOP(Object Oriented Programming
 
 2. bank.cpp
 - practice1
-- banking management system
+- make banking management system
 
 수업_진도나감
 1. source.cpp
