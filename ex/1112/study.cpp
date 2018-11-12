@@ -20,6 +20,44 @@ using namespace std;
 	만들어 보세요
 	감기 환자와 감기 약
 */
+
+class Cold
+{
+	int nose;	// 코막
+	int couph;	// 
+	int close;
+	int heat;
+
+public:
+	Cold(int nose_, int couph_, int close_, int heat_)				// 환자의 증세 초기화
+	{
+		nose = nose_;
+		couph = couph_;
+		close = close_;
+		heat = heat_;
+	}
+	
+	void requestmed(med &med)		// 증세에 따른 약 요청
+	{
+		med.prescribe(nose,couph,close,heat);
+	}
+};
+
+class med
+{
+	int nosemed;
+	int couphmed;
+	int closemed;
+	int heatmed;
+	int commed;
+
+public:
+	void prescribe(int nose, int couph, int close, int heat)					// 증세에 맞는 약 처방
+	{
+		
+	}
+};
+
 class FruitSeller
 {
 private:
