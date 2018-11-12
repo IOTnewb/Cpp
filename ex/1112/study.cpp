@@ -5,22 +5,29 @@ using namespace std;
 /*
 	- 나는 과일장수에게 5000원어치 사과 구매한다.
 	- obj 후보
-		과일장수, 과일구매자
-*/
+	과일장수, 과일구매자
+
 
 /*
-	1. 정보 은닉 잘하자
+	1. 정보 은닉 잘하자 *****
 	2. 출력만 하는 함수는 const 화
 	3. 객체간 정보 공유를 참조자를 이용해서
-
 */
 
 /*
-	캡슐화 - 범위
+	캡슐화 - 범위 (ex 기본 감기약과 comtax)
 	oop는 재사용성 유지보수 생각
 	만들어 보세요
 	감기 환자와 감기 약
 */
+
+/*
+	생성자도 함수니까 오버로딩 가능
+	객 체 배 열 - 객체 자체가 저장되는 배열
+	객 체 포 인 터 배 열 - 객체를 가리키는 포인터가 저장되는 배열
+	객체포인터배열이 메모리 효율적 사용에 더 좋다
+*/
+
 
 /* 소 멸 자 */
 class Person
@@ -28,17 +35,33 @@ class Person
 private:
 	char *name;
 	int age;
+
 public:
-	// constructor
-	Person(char *myName, int myAge)
+	// 매개 변수가 없는 constructor
+	Person()
+	{
+		name = NULL;
+		age = 0;
+		cout << "Person() call" << endl;
+	}
+	// 매개 변수가 있는 constructor
+	Person(const char *myName, int myAge)
 	{
 		int len = strlen(myName) + 1;
 		name = new char[len];
 		strcpy(name, myName);
 		age = myAge;
 	}
+	//멤버 변수 수정 함수
+	void SetPersonInfo(char *myName, int myAge)
+	{
+		name = myName;
+		age = myAge;
+	}
+
+
 	//출 력 함 수
-	void ShowPersonInfo()
+	void ShowPersonInfo() const
 	{
 		cout << "이 름 : " << name << endl;
 		cout << "나 이 : " << age << endl;
@@ -47,11 +70,17 @@ public:
 	~Person()
 	{
 		delete[]name;
+		cout << "파 괴 한 다" << endl;
 	}
 };
 
 
-/* 객 체 배 열 */
+/* 객 체 배 열 - 객체를 배열처럼 관리 */
+
+
+/* 객 체 포 인 터 배 열 - 객체를 배열처럼 관리 */
+
+
 
 /* this pointer */
 
@@ -66,7 +95,7 @@ public:
 class SinivelCap
 {
 public:
-	void Take()
+	void Take() const
 	{
 		cout << "콧물이 멈춰" << endl;
 	}
@@ -75,7 +104,7 @@ public:
 class SneezeCap
 {
 public:
-	void Take()
+	void Take() const
 	{
 		cout << "재채기가 멈춰" << endl;
 	}
@@ -85,7 +114,7 @@ public:
 class SnuffCap
 {
 public:
-	void Take()
+	void Take() const
 	{
 		cout << "코가 뚫려" << endl;
 	}
@@ -237,7 +266,66 @@ public:
 
 int main(void)
 {
-	/* 캡 슐 화 - 범 위 */
+	/* 객 체 포 인 터 배 열 - 객체를 배열처럼 관리 */
+	Person *personParray[3];
+
+	char namestr[100];
+	char *strptr;
+	int age;
+	int len;
+
+	for (int i = 0; i < 3; i++)
+	{
+		cout << "이름 : ";
+		cin >> namestr;
+		cout << "나이 : ";
+		cin >> age;
+
+		personParray[i] = new Person(namestr, age); // 객체의 주소가 리턴된다.
+	}
+
+	personParray[0]->ShowPersonInfo();
+	personParray[1]->ShowPersonInfo();
+	personParray[2]->ShowPersonInfo();
+
+	delete personParray[0];
+	delete personParray[1];
+	delete personParray[2];
+	// new 쓰거나 동적할당 하거나
+
+	/* 객 체 배 열 - 컴파일러가 클래스 스윽 보고 딱봐도 그렇겠구나 하고 만든데요
+	Person PersonArray[3];
+
+	char namestr[100];
+	char *strptr;
+	int age;
+	int len;
+
+	for (int i = 0; i < 3; i++)
+	{
+		cout << "이름 : ";
+		cin >> namestr;
+		cout << "나이 : ";
+		cin >> age;
+
+		len = strlen(namestr) + 1;
+		strptr = new char[len];
+		strcpy(strptr, namestr);
+		PersonArray[i].SetPersonInfo(strptr, age);
+	}
+
+	PersonArray[0].ShowPersonInfo();
+	PersonArray[1].ShowPersonInfo();
+	PersonArray[2].ShowPersonInfo();
+
+	/* 소 멸 자 
+	Person man1("A MU GAE", 25);
+	Person man2("GAE MU GAE", 29);
+
+	man1.ShowPersonInfo();
+	man2.ShowPersonInfo();
+
+	/* 캡 슐 화 - 범 위 
 	SinivelCap sp;
 	SneezeCap snp;
 	SnuffCap snup;
