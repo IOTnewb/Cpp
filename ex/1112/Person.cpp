@@ -1,5 +1,9 @@
 #include "Person.h"
+/*
+생성자 - 매개변수o , 매개변수x (오버로딩 가능)
+소멸자 - class 소멸시 or new로 생성된 동적 메모리 제거
 
+*/
 Person::Person()
 {
 	name = NULL;

@@ -77,7 +77,7 @@ int main(void)
 	SinivelCap sp;
 	SneezeCap snp;
 	SnuffCap snup;
-	compact600 comcap;
+	compact600 comcap;	//	한번에 약 다먹기
 
 	Cold patient;
 
