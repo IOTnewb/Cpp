@@ -14,7 +14,6 @@ public:
 		ID = 0;
 		cash = 0;
 		name = 0;
-		std::cout << "hi" << std::endl;
 	}
 
 	account(char *name, int ID, int cash)
@@ -28,133 +27,170 @@ public:
 	{
 	}
 
-	int makeaccount(account **client, int i)
+	int getID()
 	{
-		char Mname[10];
-		char *nameptr;
-		int Mcash;
-		int MID;
-		int j;
-		int x = 0;
-		int len = 0;
-
-		std::cout << "[계좌개설]" << std::endl;
-		std::cout << "계좌ID : ";
-		std::cin >> MID;
-		for (j = 0; j < i; j++)
-		{
-			if (MID == client[j]->ID)
-			{
-				std::cout << "이미 존재하는 ID입니다." << std::endl;
-				x++;
-			}
-		}
-		if (x != 1)
-		{
-			std::cout << "이름 : ";
-			std::cin >> Mname;
-			std::cout << "입금액 : ";
-			std::cin >> Mcash;
-			std::cout << "개설완료 되었습니다." << std::endl;
-			len = strlen(Mname);
-			nameptr = new char[len];
-			strcpy(nameptr, Mname);
-			client[i] = new account(nameptr, MID, Mcash);
-			return 0;
-		}
-		else
-			return -1;
+		return ID;
 	}
 
-	void deposit(account** client, int i)
+	int getcash()
 	{
-		int j;
-		int x = 0;
-		int DID;
-		int Dcash;
-		std::cout << "[입금]" << std::endl;
-		std::cout << "계좌ID : ";
-		std::cin >> DID;
-		for (j = 0; j < i; j++)
+		return cash;
+	}
+
+	void pushcash(int cash_)
+	{
+		cash += cash_;
+	}
+
+	void pullcash(int cash_)
+	{
+		cash -= cash_;
+	}
+
+	char* getname()
+	{
+		return name;
+	}
+};
+
+
+int makeaccount(account **client, int i)
+{
+	char Mname[10];
+	char *nameptr;
+	int Mcash;
+	int MID;
+	int j;
+	int x = 0;
+	int len = 0;
+
+	std::cout << "[계좌개설]" << std::endl;
+	std::cout << "계좌ID : ";
+	std::cin >> MID;
+	for (j = 0; j < i; j++)
+	{
+		if (MID == client[j]->getID())
 		{
-			if (DID == client[j]->ID)
+			std::cout << "이미 존재하는 ID입니다." << std::endl;
+			x++;
+		}
+	}
+	if (x != 1)
+	{
+		std::cout << "이름 : ";
+		std::cin >> Mname;
+		std::cout << "입금액 : ";
+		std::cin >> Mcash;
+		std::cout << "개설완료 되었습니다." << std::endl;
+		len = strlen(Mname);
+		nameptr = new char[len];
+		strcpy(nameptr, Mname);
+		client[i] = new account(nameptr, MID, Mcash);
+		return 0;
+	}
+	else
+		return -1;
+}
+
+void deposit(account** client, int i)
+{
+	int j;
+	int x = 0;
+	int DID;
+	int Dcash;
+	std::cout << "[입금]" << std::endl;
+	std::cout << "계좌ID : ";
+	std::cin >> DID;
+	for (j = 0; j < i; j++)
+	{
+		if (DID == client[j]->getID())
+		{
+			while (1)
 			{
-				while (1)
+				std::cout << "입금액 : ";
+				std::cin >> Dcash;
+				if (Dcash < 0)
 				{
-					std::cout << "입금액 : ";
-					std::cin >> Dcash;
-					if (Dcash < 0)
-					{
-						std::cout << "잘못된 값입니다.";
-					}
-					else
-					{
-						client[j]->cash += Dcash;
-						std::cout << "입금완료 되었습니다." << std::endl;
-						break;
-					}
+					std::cout << "잘못된 값입니다.";
 				}
-			}
-			else x++;
-		}
-		if (x == 100)
-			std::cout << "존재하지 않는 계좌입니다." << std::endl;
-	}
-
-	void withdraw(account** client, int i)
-	{
-		int j;
-		int x = 0;
-		int WID;
-		int Wcash;
-		std::cout << "[출금]" << std::endl;
-		std::cout << "계좌ID : ";
-		std::cin >> WID;
-		
-		for (j = 0; j < i; j++)
-		{
-			if (client[j]->ID == WID)
-			{
-				std::cout << "출금액 : ";
-				std::cin >> Wcash;
-				if (client[j]->cash - Wcash < 0)
-					std::cout << "잔액부족입니다." << std::endl;
 				else
 				{
-					client[j]->cash -= Wcash;
-					std::cout << "출금완료 되었습니다." << std::endl;
+					client[j]->pushcash(Dcash);
+					std::cout << "입금완료 되었습니다." << std::endl;
+					break;
 				}
 			}
-			else x++;
 		}
-		if (x == 100)
-			std::cout << "존재하지 않는 계좌입니다." << std::endl;
+		else x++;
 	}
+	if (x == 100)
+		std::cout << "존재하지 않는 계좌입니다." << std::endl;
+}
 
-	void printaccount(account** client, int i)
+void withdraw(account** client, int i)
+{
+	int j;
+	int x = 0;
+	int WID;
+	int Wcash;
+	std::cout << "[출금]" << std::endl;
+	std::cout << "계좌ID : ";
+	std::cin >> WID;
+
+	for (j = 0; j < i; j++)
 	{
-		int j;
-		std::cout << "[전체 출력]" << std::endl;
-		std::cout << "개설된 전체 계좌 수 : " << i << std::endl;
-
-		for (j = 0; j < i; j++)
+		if (client[j]->getID() == WID)
 		{
-			std::cout << "계좌 ID : " << client[j]->ID << std::endl;
-			std::cout << "이름	  : " << client[j]->name << std::endl;
-			std::cout << "입금액  : " << client[j]->cash << std::endl;
+			std::cout << "출금액 : ";
+			std::cin >> Wcash;
+			if (client[j]->getcash() - Wcash < 0)
+				std::cout << "잔액부족입니다." << std::endl;
+			else
+			{
+				client[j]->pullcash(Wcash);
+				std::cout << "출금완료 되었습니다." << std::endl;
+			}
 		}
+		else x++;
 	}
+	if (x == 100)
+		std::cout << "존재하지 않는 계좌입니다." << std::endl;
+}
 
-	void exitbank(account** client, int i)
+void printaccount(account** client, int i)
+{
+	int j;
+	std::cout << "[전체 출력]" << std::endl;
+	std::cout << "개설된 전체 계좌 수 : " << i << std::endl;
+
+	for (j = 0; j < i; j++)
 	{
-		int k;
-		for (k = 0; k < i; k++)
-		{
-			delete(client[k]);
-		}
+		std::cout << "계좌 ID : " << client[j]->getID() << std::endl;
+		std::cout << "이름	  : " << client[j]->getname() << std::endl;
+		std::cout << "입금액  : " << client[j]->getcash() << std::endl;
 	}
+}
 
-};
+void exitbank(account** client, int i)
+{
+	int k;
+	for (k = 0; k < i; k++)
+	{
+		delete(client[k]);
+	}
+}
+
+void printmenu()
+{
+	std::cout << "----------- MENU --------------" << std::endl;
+	std::cout << "1.계좌 개설" << std::endl;
+	std::cout << "2.입금" << std::endl;
+	std::cout << "3.출금" << std::endl;
+	std::cout << "4.계좌정보 전체 출력" << std::endl;
+	std::cout << "5.프로그램 종료\n" << std::endl;
+	std::cout << "선택 : ";
+}
+
 
 
 int main(void)
@@ -166,13 +202,7 @@ int main(void)
 
 	while (1)
 	{
-		std::cout << "----------- MENU --------------" << std::endl;
-		std::cout << "1.계좌 개설" << std::endl;
-		std::cout << "2.입금" << std::endl;
-		std::cout << "3.출금" << std::endl;
-		std::cout << "4.계좌정보 전체 출력" << std::endl;
-		std::cout << "5.프로그램 종료\n" << std::endl;
-		std::cout << "선택 : ";
+		printmenu();
 		std::cin >> select;
 
 		if (select == 1)
@@ -181,21 +211,21 @@ int main(void)
 				std::cout << "개설 최대치입니다." << std::endl;
 			else
 			{
-				value = client[i]->makeaccount(client, i);
+				value = makeaccount(client, i);
 				if (value == 0)
 					i++;
 				else;
 			}
 		}
 		else if (select == 2)
-			client[i]->deposit(client, i);
+			deposit(client, i);
 		else if (select == 3)
-			client[i]->withdraw(client, i);
+			withdraw(client, i);
 		else if (select == 4)
-			client[i]->printaccount(client, i);
+			printaccount(client, i);
 		else if (select == 5)
 		{
-			client[i]->exitbank(client,i);
+			exitbank(client,i);
 			break;
 		}
 		else
