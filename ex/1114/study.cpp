@@ -9,6 +9,8 @@ using namespace std;
 - 영업직의 급여는 기본급에 성과급을 포함할 수 있도록 디자인하세요.
 - 임시직 시급으로 계산해서 지급될 수 있도록 디자인하세요.
 - 이번 달 지불해야 할 급여총합 ( virtual )
+- virtual 함수는 또 불러다 쓰는 친구와 이름이 다르면 안된다.
+- 중첩 상속 ( Employee -> PernamentWorker -> SalesWorker )
 */
 
 /* 답안쓰 */
@@ -56,6 +58,69 @@ public:
 		cout << "salary : " << GetSalary() << endl;
 	}
 };
+
+class SalesWorker : public PernamentWorker	// 다중 상속 관계
+{
+private:
+	//판매실적
+	int salesResult;
+	//상여금 비율
+	double bonusRatio;
+public:
+	//생성자
+	SalesWorker(const char *name, int money, double ratio)
+		:PernamentWorker(name, money),
+		salesResult(0),
+		bonusRatio(ratio)
+	{}
+	//판매실적 더하는 함수
+	void AddSalesResult(int value)
+	{
+		salesResult += value;
+	}
+	//급여 반환 함수
+	int GetSalary() const
+	{
+		return PernamentWorker::GetSalary() + (int)(salesResult * bonusRatio);
+	}
+	//급여정보 출력 함수
+	void ShowSalaryInfo() const
+	{
+		ShowYourName();
+		cout << "Salary : " << GetSalary() << endl << endl;
+	}
+};
+
+class TemporaryWorker : public Employee
+{
+private:
+	// 일한시간
+	int workTime;
+	// 시급
+	int payPerHour;
+public:
+	//생성자
+	TemporaryWorker(const char *name, int pay)
+		:Employee(name), workTime(0), payPerHour(pay)
+	{}
+	//근무시간 더하는 함수
+	void AddworkTime(int time)
+	{
+		workTime += time;
+	}
+	//급여 반환 함수
+	int GetSalary() const
+	{
+		return workTime * payPerHour;
+	}
+	//급여 정보 출력 함수
+	void ShowEmployee() const
+	{
+		ShowYourName();
+		cout << "Salary : " << GetSalary() << endl << endl;
+	}
+};
+
 
 class EmployeeHandler
 {
@@ -387,7 +452,7 @@ cout << "My Major is " << major << endl;
 
 
 int main(void)
-{	
+{	/*
 	StaffManage manager;
 
 	manager.Register_Staff(new Full_time_job("원주", 200));
@@ -396,20 +461,21 @@ int main(void)
 
 	manager.AllStaffInfo();
 	manager.MonthTotalSalary();
-
-	/*
+	*/
+	
 	EmployeeHandler handler;
-	
-	handler.AddEmployee(
-	new PernamentWorker(
-	"ghdrlfehd",200));
-	handler.AddEmployee(
-	new PernamentWorker(
-	"rlarlarla",300));
-	handler.AddEmployee(
-	new PernamentWorker(
-	"qkrqkrqkr",500));
-	
+	//정 규 직
+	handler.AddEmployee(new PernamentWorker("ghdrlfehd",200));
+	//영 업 직
+	SalesWorker *seller = new SalesWorker("hong", 1000, 0.1);
+	seller->AddSalesResult(10000);
+	handler.AddEmployee(seller);
+
+	//아 르 바 이 트
+	TemporaryWorker *temp = new TemporaryWorker("Kim", 8000);
+	temp->AddworkTime(100);
+	handler.AddEmployee(temp);
+
 	handler.ShowAllSalaryInfo();
 
 	handler.ShowMonthTotalSalary();
