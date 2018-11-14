@@ -1,13 +1,106 @@
 #include <iostream>
 using namespace std;
 /*
-- 정규직은 사원이다. v
-- 사원명, 월급을 관리할 수 있도록 클래스 디자인하세요.
-- 사원을 관리할 수 있는 클래스를 디자인하세요.
+- 정규직은 사원이다. ( 상 속 )
+- 사원명, 월급을 관리할 수 있도록 클래스 디자인하세요. ( 캡 슐 화 )
+- 사원을 관리할 수 있는 클래스를 디자인하세요. ( 다 형 성 )
 - 간단한 인사관리 프로그램 작성
-- 이번 달 지불해야 할 급여총합
+- 이번 달 지불해야 할 급여총합 ( virtual )
 */
 
+/* 답안쓰 */
+class Employee
+{
+private:
+	char name[100];
+public:
+	Employee(const char *name)
+	{
+		strcpy(this->name, name);
+	}
+	void ShowYourName() const
+	{
+		cout << "name : " << name << endl;
+	}
+	//급여 반환하는 가상함수
+	virtual int GetSalary() const
+	{
+		return 0;
+	}
+
+	virtual void ShowEmployee() const
+	{
+		
+	}
+};
+
+class PernamentWorker : public Employee
+{
+private:
+	int salary;
+public:
+	PernamentWorker(const char *name, int salary)
+		: Employee(name), salary(salary)
+	{}
+	int GetSalary() const
+	{
+		return salary;
+	}
+	
+	void ShowEmployee() const
+	{
+		ShowYourName();
+		cout << "salary : " << GetSalary() << endl;
+	}
+};
+
+class EmployeeHandler
+{
+private:
+	/* 다 형 성 */
+	Employee *emplist[50];		// 중 요
+	int empNum;
+public:
+	EmployeeHandler() : empNum(0)
+	{}
+	//사원추가기능함수
+	void AddEmployee(Employee *emp) // 중 요
+	{
+		emplist[empNum++] = emp;
+	}
+	//전체사원급여정보 출력함수
+	void ShowAllSalaryInfo() const
+	{
+		for (int i = 0; i < empNum; i++)
+		{
+			emplist[i]->ShowEmployee();
+		}
+	
+	}
+	//이번달지급총급여 출력함수
+	void ShowMonthTotalSalary() const
+	{
+		int sum = 0;
+
+		for (int i = 0; i < empNum; i++)
+		{
+			sum += emplist[i]->GetSalary();
+		}
+		cout << "TOTAL SALARY : " << sum << endl;
+	}
+	//소멸자
+	~EmployeeHandler()
+	{
+		for (int i = 0; i < empNum; i++)
+		{
+			delete emplist[i];
+		}
+		
+	}
+};
+/* 답안 끝 */
+
+/*
 class Staff // 사원
 {
 private:
@@ -56,7 +149,7 @@ private:
 	Staff *Stafflist[100];		// 사원 인원
 	int incentive;					// 월급 인상
 	int paycut;						// 월급 감축
-	int count=0;
+	int count=0;					// 생성자에서 해결했어야지
 public:
 	StaffManage(int up, int down)
 		: incentive(up),
@@ -88,7 +181,7 @@ public:
 		cout << "Month Total Salary : " << All << endl;
 	}
 };
-
+*/
 
 
 class Gun
@@ -218,6 +311,23 @@ cout << "My Major is " << major << endl;
 
 int main(void)
 {	
+	EmployeeHandler handler;
+	
+	handler.AddEmployee(
+	new PernamentWorker(
+	"ghdrlfehd",200));
+	handler.AddEmployee(
+	new PernamentWorker(
+	"rlarlarla",300));
+	handler.AddEmployee(
+	new PernamentWorker(
+	"qkrqkrqkr",500));
+	
+	handler.ShowAllSalaryInfo();
+
+	handler.ShowMonthTotalSalary();
+
+	/*
 	StaffManage HRmanager(20, 20);
 	HRmanager.Register_Staff("dnjswn", 200);
 	HRmanager.Register_Staff("qhdwn", 200);
@@ -228,7 +338,7 @@ int main(void)
 
 	HRmanager.MonthTotalSalary();
 
-
+	*/
 	/* ㄹㅇ 경찰 
 	Police policeMan(5, 3);
 	policeMan.shooot();
