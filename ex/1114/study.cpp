@@ -103,6 +103,7 @@ public:
 };
 /* 답안 끝 */
 
+
 /* 내 꺼 */
 class Staff // 사원
 {
@@ -193,7 +194,7 @@ public:
 	void Show()
 	{
 		MyCarrier();
-		cout << "Salary : " << Salary + incentive << endl;
+		cout << "Salary : " << Salary + incentive << "(incen included)" << endl;
 	}
 };
 
