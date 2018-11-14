@@ -5,6 +5,9 @@ using namespace std;
 - 사원명, 월급을 관리할 수 있도록 클래스 디자인하세요. ( 캡 슐 화 )
 - 사원을 관리할 수 있는 클래스를 디자인하세요. ( 다 형 성 )
 - 간단한 인사관리 프로그램 작성
+- 영업직, 임시직의 엔터티 클래스를 작성하세요.
+- 영업직의 급여는 기본급에 성과급을 포함할 수 있도록 디자인하세요.
+- 임시직 시급으로 계산해서 지급될 수 있도록 디자인하세요.
 - 이번 달 지불해야 할 급여총합 ( virtual )
 */
 
@@ -100,16 +103,45 @@ public:
 };
 /* 답안 끝 */
 
-/*
+/* 내 꺼 */
 class Staff // 사원
 {
 private:
 	char name[20];
-	int Salary;
+	
 public:
-	Staff(const char* staff_name, int SalaryNum)
+	Staff(const char* staff_name)
 	{
 		strcpy(name, staff_name);
+	}
+
+	void MyCarrier()
+	{
+		cout << "이름 : " << name << endl;
+	}
+
+	virtual int getSalary()
+	{
+		return 0;
+	}
+
+
+	virtual void Show()
+	{}
+	virtual void Show_SalesSalary()
+	{}
+	virtual void Show_PartTimeJob()
+	{}
+};
+
+class Full_time_job : public Staff // 정규직
+{
+private:
+	int Salary;
+public:
+	Full_time_job(const char* staff_name, int SalaryNum)
+		:Staff(staff_name)
+	{
 		Salary = SalaryNum;
 	}
 
@@ -122,52 +154,96 @@ public:
 	{
 		Salary += money;
 	}
-	
+
 	void Paycut(int money)
 	{
 		Salary -= money;
 	}
 
-	void MyCarrier()
+	void Show()
 	{
-		cout << "이름 : " << name << endl;
-		cout << "월급 : " << Salary << endl;
+		MyCarrier();
+		cout << "Salary : " << Salary << endl;
 	}
 };
 
-class Full_time_job : public Staff // 정규직
+class SalaryWorker : public Staff // 정규직
 {
 private:
-	int year;
+	int Salary;
+	int incentive;
 public:
+	SalaryWorker(const char* staff_name, int SalaryNum, int incen)
+		:Staff(staff_name)
+	{
+		Salary = SalaryNum;
+		incentive = incen;
+	}
 
+	int getSalary()
+	{
+		return Salary + incentive;
+	}
+
+	void Incentive()
+	{
+		Salary += incentive;
+	}
+
+	void Show()
+	{
+		MyCarrier();
+		cout << "Salary : " << Salary + incentive << endl;
+	}
 };
+
+class Part_time_job : public Staff // 정규직
+{
+private:
+	int Salary;
+	int worktime;
+public:
+	Part_time_job(const char* staff_name, int SalaryNum, int time)
+		:Staff(staff_name)
+	{
+		worktime = time;
+		Salary = SalaryNum*worktime;
+	}
+
+	int getSalary()
+	{
+		return Salary;
+	}
+	
+	void Show()
+	{
+		MyCarrier();
+		cout << "Salary : " << Salary << endl;
+	}
+};
+
 
 class StaffManage
 {
 private:
 	Staff *Stafflist[100];		// 사원 인원
-	int incentive;					// 월급 인상
-	int paycut;						// 월급 감축
-	int count=0;					// 생성자에서 해결했어야지
+	int count;					// 생성자에서 해결했어야지
 public:
-	StaffManage(int up, int down)
-		: incentive(up),
-		  paycut(down)
+	StaffManage()
+		: count(0)
 	{}
-	void Register_Staff(const char* name, int money)
+	void Register_Staff(Staff * staff)
 	{
-		Stafflist[count] = new Staff(name, money);
+		Stafflist[count] = staff;
 		count++;
 	}
-	void IncreaseSalary(int No)
+
+	void AllStaffInfo()
 	{
-		Stafflist[No]->Incentive(incentive);
-	}
-	
-	void DecreaseSalary(int No)
-	{
-		Stafflist[No]->Paycut(paycut);
+		for (int i = 0; i < count; i++)
+		{
+			Stafflist[i]->Show();
+		}
 	}
 
 	void MonthTotalSalary()
@@ -181,9 +257,9 @@ public:
 		cout << "Month Total Salary : " << All << endl;
 	}
 };
-*/
 
 
+/*
 class Gun
 {
 private:
@@ -231,7 +307,7 @@ public:
 			delete pistol;
 	}
 };
-
+*/
 /*
 class Gun
 {
@@ -311,6 +387,16 @@ cout << "My Major is " << major << endl;
 
 int main(void)
 {	
+	StaffManage manager;
+
+	manager.Register_Staff(new Full_time_job("원주", 200));
+	manager.Register_Staff(new Part_time_job("qhdwn", 1, 9));
+	manager.Register_Staff(new SalaryWorker("ekgP", 200, 150));
+
+	manager.AllStaffInfo();
+	manager.MonthTotalSalary();
+
+	/*
 	EmployeeHandler handler;
 	
 	handler.AddEmployee(
