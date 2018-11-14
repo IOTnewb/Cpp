@@ -4,7 +4,7 @@ using namespace std;
 
 class Gun
 {
-protected:
+private:
 	int bullet;
 public:
 	Gun(int bulletNum)
