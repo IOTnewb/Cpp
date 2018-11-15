@@ -21,6 +21,8 @@ private:
 	};
 public:
 	AccountManager();
+	AccountManager(AccountManager &copy);
+
 	void Register_Client();
 
 	void deposit();

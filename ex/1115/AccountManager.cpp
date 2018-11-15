@@ -3,6 +3,11 @@
 AccountManager::AccountManager()
 	: count(0)
 {}
+
+AccountManager::AccountManager(AccountManager &copy)
+	: count(0)
+{}
+
 void AccountManager::Register_Client()
 {
 	char Mname[10];
