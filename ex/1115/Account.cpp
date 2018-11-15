@@ -3,7 +3,7 @@
 Account::Account(const char *name, int cash, int ID)
 	: cash(cash), ID(ID)
 {
-	int len = strlen(name) + 1;
+	size_t len = strlen(name) + 1;
 	this->name = new char[len];
 	strcpy(this->name, name);
 }

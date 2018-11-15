@@ -12,7 +12,7 @@ void AccountManager::Register_Client()
 {
 	char Mname[10];
 	char *nameptr;
-	int len;
+	size_t len;
 	int Mcash;
 	int MID;
 	double Mratio;
@@ -132,7 +132,7 @@ void AccountManager::withDraw()
 	int Wcash;
 	int x = 0;
 	cout << "[Ãâ±Ý]" << endl;
-	cout << "°èÁÂID" << endl;
+	cout << "°èÁÂID : ";
 	cin >> WID;
 	for (int i = 0; i < count; i++)
 	{

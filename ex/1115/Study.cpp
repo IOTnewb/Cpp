@@ -23,7 +23,7 @@ public:
 	Person(const char *myName, int myAge)
 		:age(myAge)
 	{
-		int len = strlen(myName) + 1;
+		size_t len = strlen(myName) + 1;
 		name = new char[len];
 		strcpy(name, myName);
 	}
