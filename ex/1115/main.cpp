@@ -7,13 +7,25 @@ using namespace std;
 class Account
 {
 private:
-	const char *name;
+	char *name;
 	int cash;
 	int ID;
 public:
 	Account(const char *name, int cash, int ID)
-		: name(name), cash(cash), ID(ID)
-	{}
+		: cash(cash), ID(ID)
+	{
+		int len = strlen(name) + 1;
+		this->name = new char[len];
+		strcpy(this->name, name);
+	}
+
+	Account(const Account &copy)
+		: cash(cash), ID(ID)
+	{
+		name = new char[strlen(copy.name) + 1];
+		strcpy(name, copy.name);
+	}
+
 
 	void PrintAccountInfo() const
 	{
@@ -75,7 +87,7 @@ public:
 
 	void AddCash(int add_cash)
 	{
-		upcash((int)(add_cash + (add_cash*basicRatio)));
+		upcash((int)(add_cash + ((add_cash*basicRatio)/100)));
 	}
 
 	void SubCash(int sub_cash)
@@ -319,6 +331,7 @@ void printmenu()
 int main(void)
 {
 	AccountManager manager;
+	AccountManager copy = manager;
 	int sel;
 
 	while (1)
@@ -327,16 +340,16 @@ int main(void)
 		cin >> sel;
 
 		if (sel == 1)
-			manager.Register_Client();
+			copy.Register_Client();
 		else if (sel == 2)
-				manager.deposit();
+			copy.deposit();
 		else if (sel == 3)
-				manager.withDraw();
+			copy.withDraw();
 		else if (sel == 4)
-				manager.PrintAllAccount();
+			copy.PrintAllAccount();
 		else if (sel == 5)
 				{
-					manager.exit();
+					copy.exit();
 					break;
 				}
 		
