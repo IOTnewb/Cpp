@@ -10,7 +10,7 @@ NormalAccount::NormalAccount(const NormalAccount &copy, double ratio)
 
 void NormalAccount::PrintAccount() const
 {
-	cout << "NormalAccount" << endl;
+	cout << "----NormalAccount----" << endl;
 	PrintAccountInfo();
 	cout << "Ratio : " << basicRatio << "%" << endl;
 }
