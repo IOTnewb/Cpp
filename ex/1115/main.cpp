@@ -2,14 +2,7 @@
 
 using namespace std;
 
-#define LEVEL_A				1
-#define LEVEL_B				2
-#define LEVEL_C				3
-#define LEVEL_A_RATIO		7
-#define LEVEL_B_RATIO		4
-#define LEVEL_C_RATIO		2
-#define NORMAL				1
-#define CREDIT					2
+
 
 class Account
 {
@@ -21,16 +14,40 @@ public:
 	Account(const char *name, int cash, int ID)
 		: name(name), cash(cash), ID(ID)
 	{}
-	void PrintAccountInfo()
+
+	void PrintAccountInfo() const
 	{
 		cout << "이름 : " << name << endl;
 		cout << "계좌ID : " << ID << endl;
 		cout << "잔액 : " << cash << endl;
 	}
-
+	
 	int GetID()
 	{
 		return ID;
+	}
+
+	void upcash(int cashh)
+	{
+		cash += cashh;
+	}
+
+	void downcash(int cashh)
+	{
+		cash -= cashh;
+	}
+
+	virtual void AddCash(int add_cash)
+	{
+	}
+
+	virtual void SubCash(int sub_cash)
+	{
+	}
+
+	virtual void PrintAccount() const
+	{
+
 	}
 
 };
@@ -40,16 +57,31 @@ class NormalAccount : public Account
 private:
 	double basicRatio;
 public:
-	NormalAccount(const char *name, int cash, int ID)
-		: Account(name, cash, ID), basicRatio(0.75)
+	NormalAccount(const char *name, int cash, int ID, double ratio)
+		: Account(name, cash, ID), basicRatio(ratio)
 	{}
 
-	void PrintAccount()
+	void PrintAccount() const
 	{
 		cout << "NormalAccount" << endl;
 		PrintAccountInfo();
+		cout << "Ratio : " << basicRatio << "%" << endl;
 	}
 
+	double GetRatio() const
+	{
+		return basicRatio;
+	}
+
+	void AddCash(int add_cash)
+	{
+		upcash((int)(add_cash + (add_cash*basicRatio)));
+	}
+
+	void SubCash(int sub_cash)
+	{
+		downcash(sub_cash);
+	}
 };
 
 class HighCreditAccount : public NormalAccount
@@ -57,16 +89,26 @@ class HighCreditAccount : public NormalAccount
 private:
 	double addRatio;
 public:
-	HighCreditAccount(const char *name, int cash, int ID, int addratio)
-		: NormalAccount(name, cash, ID), addRatio(addratio)
+	HighCreditAccount(const char *name, int cash, int ID, double ratio, double addratio)
+		: NormalAccount(name, cash, ID, ratio), addRatio(addratio)
 	{}
 
-	void PrintAccount()
+	void PrintAccount() const
 	{
 		cout << "HighCreditAccount" << endl;
 		PrintAccountInfo();
+		cout << "Total Ratio : " << GetRatio() + addRatio << "%" << endl;
 	}
 
+	void AddCash(int add_cash)
+	{
+		upcash((int)(add_cash + (add_cash*((addRatio+GetRatio())/100))));
+	}
+
+	void SubCash(int sub_cash)
+	{
+		downcash(sub_cash);
+	}
 };
 
 class AccountManager
@@ -74,6 +116,17 @@ class AccountManager
 private:
 	Account *client[100];
 	int count;
+	enum
+	{
+		LEVEL_A = 1,
+		LEVEL_B = 2,
+		LEVEL_C = 3,
+		LEVEL_A_RATIO = 7,
+		LEVEL_B_RATIO = 4,
+		LEVEL_C_RATIO = 2,
+		NORMAL = 1,
+		CREDIT = 2
+	};
 public:
 	AccountManager()
 		: count(0)
@@ -85,6 +138,7 @@ public:
 		int len;
 		int Mcash;
 		int MID;
+		double Mratio;
 		int Index;
 		int CreditLevel;
 		int except = 0;
@@ -113,7 +167,7 @@ public:
 				len = strlen(Mname);
 				nameptr = new char[len];
 				strcpy(nameptr, Mname);
-				client[count] = new NormalAccount(nameptr, Mcash, MID);
+				client[count] = new NormalAccount(nameptr, Mcash, MID, 0.75);
 				count++;
 				cout << "개설되었습니다. " << endl;
 			}
@@ -137,21 +191,24 @@ public:
 				cin >> Mname;
 				cout << "금액 : ";
 				cin >> Mcash;
+				cout << "이율 : ";
+				cin >> Mratio;
 				cout << "신용 등급 : (1,2,3) ";
 				cin >> CreditLevel;
 				len = strlen(Mname);
 				nameptr = new char[len];
 				strcpy(nameptr, Mname);
 				if(CreditLevel == LEVEL_A)
-					client[count] = new HighCreditAccount(nameptr, Mcash, MID, LEVEL_A_RATIO);
+					client[count] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_A_RATIO);
 				else if(CreditLevel == LEVEL_B)
-					client[count] = new HighCreditAccount(nameptr, Mcash, MID, LEVEL_B_RATIO);
+					client[count] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_B_RATIO);
 				else if (CreditLevel == LEVEL_C)
-					client[count] = new HighCreditAccount(nameptr, Mcash, MID, LEVEL_C_RATIO);
+					client[count] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_C_RATIO);
 				count++;
 				cout << "개설되었습니다. " << endl;
 			}
 		}
+		else;
 
 		
 	}
@@ -160,6 +217,7 @@ public:
 	{
 		int DID;
 		int Dcash;
+		int x = 0;
 
 		cout << "[입금]" << endl;
 		cout << "계좌ID : ";
@@ -174,32 +232,75 @@ public:
 					cin >> Dcash;
 					if (Dcash < 0)
 					{
-						std::cout << "잘못된 값입니다.";
+						cout << "잘못된 값입니다.";
 					}
 					else
 					{
-						client[i]->pushcash(Dcash);
+						client[i]->AddCash(Dcash);
 						cout << "입금완료 되었습니다." << endl;
 						break;
 					}
 				}
 			}
+			else
+				x++;
 		}
+		if(x == count)
+			cout << "존재하지 않는 ID입니다. " << endl << endl;
 	}
 
 	void withDraw()
 	{
-
+		int WID;
+		int Wcash;
+		int x=0;
+		cout << "[출금]" << endl;
+		cout << "계좌ID" << endl;
+		cin >> WID;
+		for (int i = 0; i < count; i++)
+		{
+			if (WID == client[i]->GetID())
+			{
+				while (1)
+				{
+					cout << "출금액 : ";
+					cin >> Wcash;
+					if (Wcash < 0)
+					{
+						cout << "잘못된 값입니다.";
+					}
+					else
+					{
+						client[i]->SubCash(Wcash);
+						cout << "출금완료 되었습니다." << endl;
+						break;
+					}
+				}
+			}
+			else
+				x++;
+		}
+		if (x == count)
+			cout << "존재하지 않는 ID입니다. " << endl << endl;
 	}
 
 	void PrintAllAccount()
 	{
+		cout << "[전체 출력]" << endl;
+		cout << "개설된 전체 계좌 수 : " << count << endl;
 
+		for (int i = 0; i < count; i++)
+		{
+			client[i]->PrintAccount();
+		}
 	}
 
 	void exit()
 	{
-
+		for (int i = 0; i < count; i++)
+		{
+			delete client[i];
+		}
 	}
 };
 
@@ -227,19 +328,18 @@ int main(void)
 
 		if (sel == 1)
 			manager.Register_Client();
-		/*	else if (sel == 2)
+		else if (sel == 2)
 				manager.deposit();
-			else if (sel == 3)
-				manager.deposit();
-			else if (sel == 4)
-				manager.deposit();
-			else if (sel == 5)
+		else if (sel == 3)
+				manager.withDraw();
+		else if (sel == 4)
+				manager.PrintAllAccount();
+		else if (sel == 5)
 				{
 					manager.exit();
 					break;
-				}*/
-		else
-			break;
+				}
+		
 	}
 	return 0;
 }
