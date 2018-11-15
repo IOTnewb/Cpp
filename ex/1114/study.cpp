@@ -10,7 +10,7 @@ using namespace std;
 - 임시직 시급으로 계산해서 지급될 수 있도록 디자인하세요.
 - 이번 달 지불해야 할 급여총합 ( virtual )
 - virtual 함수는 또 불러다 쓰는 친구와 이름이 다르면 안된다.
-- 중첩 상속 ( Employee -> PernamentWorker -> SalesWorker )
+- 중첩 상속 ( Employee -> PermanentWorker -> SalesWorker )
 */
 
 /* 답안쓰 */
@@ -39,12 +39,12 @@ public:
 	}
 };
 
-class PernamentWorker : public Employee
+class PermanentWorker : public Employee
 {
 private:
 	int salary;
 public:
-	PernamentWorker(const char *name, int salary)
+	PermanentWorker(const char *name, int salary)
 		: Employee(name), salary(salary)
 	{}
 	int GetSalary() const
@@ -59,7 +59,7 @@ public:
 	}
 };
 
-class SalesWorker : public PernamentWorker	// 다중 상속 관계
+class SalesWorker : public PermanentWorker	// 다중 상속 관계
 {
 private:
 	//판매실적
@@ -69,7 +69,7 @@ private:
 public:
 	//생성자
 	SalesWorker(const char *name, int money, double ratio)
-		:PernamentWorker(name, money),
+		:PermanentWorker(name, money),
 		salesResult(0),
 		bonusRatio(ratio)
 	{}
@@ -81,7 +81,7 @@ public:
 	//급여 반환 함수
 	int GetSalary() const
 	{
-		return PernamentWorker::GetSalary() + (int)(salesResult * bonusRatio);
+		return PermanentWorker::GetSalary() + (int)(salesResult * bonusRatio);
 	}
 	//급여정보 출력 함수
 	void ShowSalaryInfo() const
@@ -465,7 +465,7 @@ int main(void)
 	
 	EmployeeHandler handler;
 	//정 규 직
-	handler.AddEmployee(new PernamentWorker("ghdrlfehd",200));
+	handler.AddEmployee(new PermanentWorker("ghdrlfehd",200));
 	//영 업 직
 	SalesWorker *seller = new SalesWorker("hong", 1000, 0.1);
 	seller->AddSalesResult(10000);
