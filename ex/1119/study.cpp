@@ -2,6 +2,105 @@
 
 using namespace std;
 
+class Point
+{
+private:
+	int xpos;
+	int ypos;
+public:
+	Point(int x = 0, int y = 0)
+		: xpos(x), ypos(y)
+	{}
+	void ShowPosition() const
+	{
+		cout << "[" << xpos << ", " << ypos << "]" << endl;
+	}
+
+	Point &operator++()
+	{
+		xpos += 1;
+		ypos += 1;
+		return *this;
+	}
+
+	// ++후위 연산자 오버로딩
+	Point operator++(int)
+	{
+		/* 답 */
+		const Point retobj(xpos, ypos);	// 연산 전 결과를 복사할 녀석 만듬
+		xpos += 1;								// 본래 값에 ++
+		ypos += 1;								// 본래 값에 ++
+		return retobj;								// 연산 전 결과 반환 ( 그래야 후위 연산처럼 되니까 )
+	}
+
+	// 자료형이 다른 경우 연산자 오버로딩
+	Point operator*(int times) // 다른 자료형의 타입을 매개변수에 써준다?
+	{
+		Point pos(xpos*times, ypos*times);
+		return pos;
+	}
+
+
+	// --후위 연산자 오버로딩
+	friend Point &operator--(Point &ref);
+	friend Point operator--(Point &ref, int);
+
+};
+
+// -- 단항 연산자 오버로딩
+// 전 역 함 수
+Point &operator--(Point &ref)
+{
+	ref.xpos -= 1;
+	ref.ypos -= 1;
+	return ref;
+}
+
+// -- 후위 연산 오버로딩
+Point operator--(Point &ref, int)
+{
+	const Point post(ref);	// 연산 전 결과를 복사할 녀석 만듬
+	ref.xpos -= 1;			// 본래 값에 --
+	ref.ypos -= 1;			// 본래 값에 --
+	return post;				// 연산 전 결과 반환 ( 그래야 후위 연산처럼 되니까 )
+}
+
+/*
+class Point
+{
+private:
+	int xpos;
+	int ypos;
+public:
+	Point(int x = 0, int y = 0)
+		: xpos(x), ypos(y)
+	{}
+	void ShowPosition() const
+	{
+		cout << "[" << xpos << ", " << ypos << "]" << endl;
+	}
+
+	/* 연산자 오버로딩 - 멤버 함수에 의한 연산자 오버로딩 
+	Point operator+(const Point &ref) const
+	{
+		Point pos(xpos + ref.xpos, ypos + ref.ypos);
+		return pos;
+	}
+	
+	// 전역 함수에 의한 연산자 오버로딩
+	//friend Point operator+(const Point &pt1, const Point &pt2);
+
+};
+*/
+/*
+Point operator+(const Point &pt1, const Point &pt2)
+{
+	Point pos(pt1.xpos + pt2.xpos, pt1.ypos + pt2.ypos);
+	return pos;
+}
+*/
+
+/*
 class SoSimple
 {
 private:
@@ -21,7 +120,7 @@ public:
 		num2 = num1;
 	}
 };
-
+*/
 
 /* static 함수(클래스 함수)
 class SoSimple
@@ -315,9 +414,89 @@ int main(void)
 	- const 함수 내에서 멤버변수 값의 변경을 예외적으로 허용
 
 	*/
+	/*
 	SoSimple sm(1, 2);
 	sm.ShowSimpleData();
 	sm.CopyToNum2();
 	sm.ShowSimpleData();
+	*/
+
+	/* 연산자 오버로딩 
+		- 정의 : 연산자가 오버로딩 되면, 피연산자의 종류에 따라 연산 방식이 달라지는 것
+		- 멤버함수에 의한 오버로딩
+		- 전역함수에 의한 오버로딩
+	*/
+	/*
+	Point pos1(3, 4);
+	Point pos2(10, 10);
+
+	 //연 산 자 오 버 로 딩 - 멤버함수에 의한 오버로딩 
+	Point pos3 = pos1 + pos2;
+	/*	
+	Point pos3 = pos1.operator+(pos2);
+	Point pos3 = pos2.operator+(pos1);
+	
+	pos1.ShowPosition();
+	pos2.ShowPosition();
+	
+	/* 연산자 오버로딩 결과 
+	pos3.ShowPosition();
+	*/
+
+
+	/* 단항 연산자 오버로딩 (전위) 
+	Point pos(1, 2);
+	++pos; //					(전위 연산자)
+	//pos.operator++();	(멤버함수의 경우)
+	//operator++(pos);	(전역함수의 경우)
+	pos.ShowPosition();
+	--pos;
+	//pos.operator--();	(멤버함수의 경우)
+	//operator--(pos);	(전역함수의 경우)
+	pos.ShowPosition();
+
+	++(++pos);
+	pos.ShowPosition();
+	--(--pos);
+	pos.ShowPosition();
+
+	*/
+
+	/* 전위 후위 연산자 차이 
+	int num = 10;
+
+	cout << num++ << endl;	// 10(후위 출력 후 값 증가)
+	cout << ++num << endl;	// 12(전위 값 증가 후 출력)
+
+	*/
+
+	/* 단항 연산자 오버로딩 (후위) 
+	-	++pos, --pos 전 위
+		pos.operator++();
+		pos.operator--();
+	-	pos++, pos-- 후 위
+		pos.operator++(int);
+		pos.operator--(int);
+	
+	Point pos2(3, 5);
+	Point cp;
+
+	cp =	pos2++;
+	pos2.ShowPosition();
+	cp.ShowPosition();
+
+	cp = pos2--;
+	pos2.ShowPosition();
+	cp.ShowPosition();
+	*/
+
+	/* 자료형이 다른 경우 오버로딩 */
+	Point pos(1, 2);
+	Point cpy;
+
+	cpy = pos * 3;
+
+	cpy.ShowPosition();
+
 	return 0;
 }
