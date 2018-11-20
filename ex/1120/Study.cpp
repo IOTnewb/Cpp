@@ -5,12 +5,13 @@ using namespace std;
 
 /*예외 클래스를 위한 예외처리*/
 //입금 예외 처리
-class DepositException
+class DepositException	: public Account
 {
 private:
 	int deMoney;	// 입금액
 public:
-	DepositException(int money) : deMoney(money)
+	DepositException(const char *number, int money, int Dmoney)
+		: Account(number, money), deMoney(Dmoney)
 	{}
 	void ShowExceptionReason()
 	{
@@ -18,12 +19,13 @@ public:
 	}
 };
 
-class WithdrawException
+class WithdrawException : public Account
 {
 private:
 	int balance;		// 잔액
 public:
-	WithdrawException(int money) : balance(money)
+	WithdrawException(const char *number, int money, int cash)
+		: Account(number, money), balance(cash)
 	{}
 	void ShowExceptionReason()
 	{
@@ -48,7 +50,7 @@ public:
 	{
 		if (money < 0)
 		{
-			DepositException expn(money);
+			DepositException expn(Account);
 			throw expn;
 		}
 		else
@@ -60,12 +62,17 @@ public:
 	{
 		if (balance < money)
 		{
-			WithdrawException expn(balance);
+			WithdrawException expn(Account);
 			throw expn;
 		}
 		else
 			balance -= money;
 	}
+	virtual void ShowExceptionReason()
+	{
+
+	}
+
 	//잔액조회
 	void ShowMyAccount()
 	{
@@ -449,7 +456,7 @@ try
 	client1.Deposit(2000);
 	client1.Deposit(-300);
 }
-catch (DepositException &expn)
+catch (Account &expn)
 {
 	expn.ShowExceptionReason();
 }
@@ -459,7 +466,7 @@ try
 	client1.Withdraw(1000);
 	client1.Withdraw(10000);
 }
-catch (WithdrawException &expn)
+catch (Account &expn)
 {
 	expn.ShowExceptionReason();
 }
