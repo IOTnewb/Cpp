@@ -3,82 +3,134 @@
 
 using namespace std;
 
+/* 예외처리를 위한 상속관계에서의 예외위임에 따른 주의사항 */
+class AAA
+{
+public:
+	void ShowYou()
+	{
+		cout << "AAA exception" << endl;
+	}
+};
+class BBB : public AAA
+{
+public:
+	void ShowYou()
+	{
+		cout << "BBB exception" << endl;
+	}
+};
+class CCC : public BBB
+{
+public:
+	void ShowYou()
+	{
+		cout << "CCC exception" << endl;
+	}
+};
+
+void ExceptionGenerator(int expn)
+{
+	if (expn == 1)
+		throw AAA();
+	else if (expn == 2)
+		throw BBB();
+	else
+		throw CCC();
+}
+
+
 /*예외 클래스를 위한 예외처리*/
-//입금 예외 처리
-class DepositException	: public Account
-{
-private:
-	int deMoney;	// 입금액
-public:
-	DepositException(const char *number, int money, int Dmoney)
-		: Account(number, money), deMoney(Dmoney)
-	{}
-	void ShowExceptionReason()
-	{
-		cout << "예외메세지 : " << deMoney << "는 입금불가합니다." << endl;
-	}
-};
-
-class WithdrawException : public Account
-{
-private:
-	int balance;		// 잔액
-public:
-	WithdrawException(const char *number, int money, int cash)
-		: Account(number, money), balance(cash)
-	{}
-	void ShowExceptionReason()
-	{
-		cout << "예외메세지 : 잔액 " << balance << ", 잔액부족" << endl;
-	}
-};
-
-class Account
-{
-private:
-	char accNum[50];
-	int balance;
-public:
-	Account(const char *number, int money)
-		: balance(money)
-	{
-		strcpy(accNum, number);
-	}
-	//입금
-	void Deposit(int money)	
-		throw (DepositException)	// 문법, 가독성을 위해 사용함
-	{
-		if (money < 0)
-		{
-			DepositException expn(Account);
-			throw expn;
-		}
-		else
-			balance += money;
-	}
-	//출금
-	void Withdraw(int money)
-		throw (WithdrawException)
-	{
-		if (balance < money)
-		{
-			WithdrawException expn(Account);
-			throw expn;
-		}
-		else
-			balance -= money;
-	}
-	virtual void ShowExceptionReason()
-	{
-
-	}
-
-	//잔액조회
-	void ShowMyAccount()
-	{
-		cout << "잔액 : " << balance << endl << endl;
-	}
-};
+////추상 클래스 = 순수가상 함수를 가지고 있다.
+////객체 생성시 컴파일 에러 발생
+//class AccountException
+//{
+//private:
+//
+//public:
+//	//순수가상함수 = body 가 없는 가상 함수
+//	virtual void ShowExceptionReason() = 0;
+//	//가상함수
+//	/*virtual void ShowExceptionReason()
+//	{}*/
+//};
+//
+//
+////입금 예외 처리
+//class DepositException : public AccountException
+//{
+//private:
+//	int deMoney;	// 입금액
+//public:
+//	DepositException(int money)
+//		: deMoney(money)
+//	{}
+//	void ShowExceptionReason()
+//	{
+//		cout << "예외메세지 : " << deMoney << "는 입금불가합니다." << endl;
+//	}
+//};
+//
+//class WithdrawException : public AccountException
+//{
+//private:
+//	int balance;		// 잔액
+//public:
+//	WithdrawException(int money)
+//		: balance(money)
+//	{}
+//	void ShowExceptionReason()
+//	{
+//		cout << "예외메세지 : 잔액 " << balance << ", 잔액부족" << endl;
+//	}
+//};
+//
+//class Account
+//{
+//private:
+//	char accNum[50];
+//	int balance;
+//public:
+//	Account(const char *number, int money)
+//		: balance(money)
+//	{
+//		strcpy(accNum, number);
+//	}
+//	//입금
+//	void Deposit(int money)	
+//		throw (AccountException)	// 문법, 가독성을 위해 사용함
+//	{
+//		if (money < 0)
+//		{
+//			DepositException expn(money);
+//			throw expn;
+//		}
+//		else
+//			balance += money;
+//	}
+//	//출금
+//	void Withdraw(int money)
+//		throw (AccountException)
+//	{
+//		if (balance < money)
+//		{
+//			WithdrawException expn(balance);
+//			throw expn;
+//		}
+//		else
+//			balance -= money;
+//	}
+//	virtual void ShowExceptionReason()
+//	{
+//
+//	}
+//
+//	//잔액조회
+//	void ShowMyAccount()
+//	{
+//		cout << "잔액 : " << balance << endl << endl;
+//	}
+//};
 
 
 
@@ -449,30 +501,55 @@ int main(void)
 //}
 
 /*예외 클래스를 위한 예외처리*/
-Account client1("123", 5000);
+//Account client1("123", 5000);
+//
+//try
+//{
+//	client1.Deposit(2000);
+//	client1.Deposit(-300);
+//}
+//catch (AccountException &expn)
+//{
+//	expn.ShowExceptionReason();
+//}
+//client1.ShowMyAccount();
+//
+//try
+//{
+//	client1.Withdraw(1000);
+//	client1.Withdraw(10000);
+//}
+//catch (AccountException &expn)
+//{
+//	expn.ShowExceptionReason();
+//}
+//
+//client1.ShowMyAccount();
 
+/*		예외처리를 위한 상속관계에서의 예외위임에 따른 주의사항 
+		- 자식부터 먼저 체크를 한다
+*/
 try
 {
-	client1.Deposit(2000);
-	client1.Deposit(-300);
+	ExceptionGenerator(3);
+	ExceptionGenerator(2);
+	ExceptionGenerator(1);
 }
-catch (Account &expn)
+catch (CCC &expn)
 {
-	expn.ShowExceptionReason();
+	cout << "catch(CCC &expn)" << endl;
+	expn.ShowYou();
 }
-
-try
+catch (BBB &expn)
 {
-	client1.Withdraw(1000);
-	client1.Withdraw(10000);
+	cout << "catch(BBB &expn)" << endl;
+	expn.ShowYou();
 }
-catch (Account &expn)
+catch (AAA &expn)
 {
-	expn.ShowExceptionReason();
+	cout << "catch(AAA &expn)" << endl;
+	expn.ShowYou();
 }
-
-client1.ShowMyAccount();
-
 
 	return 0;
 }
