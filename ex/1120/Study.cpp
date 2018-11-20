@@ -3,6 +3,112 @@
 
 using namespace std;
 
+/*øπø‹ ≈¨∑°Ω∫∏¶ ¿ß«— øπø‹√≥∏Æ*/
+//¿‘±› øπø‹ √≥∏Æ
+class DepositException
+{
+private:
+	int deMoney;	// ¿‘±›æ◊
+public:
+	DepositException(int money) : deMoney(money)
+	{}
+	void ShowExceptionReason()
+	{
+		cout << "øπø‹∏ﬁºº¡ˆ : " << deMoney << "¥¬ ¿‘±›∫“∞°«’¥œ¥Ÿ." << endl;
+	}
+};
+
+class WithdrawException
+{
+private:
+	int balance;		// ¿‹æ◊
+public:
+	WithdrawException(int money) : balance(money)
+	{}
+	void ShowExceptionReason()
+	{
+		cout << "øπø‹∏ﬁºº¡ˆ : ¿‹æ◊ " << balance << ", ¿‹æ◊∫Œ¡∑" << endl;
+	}
+};
+
+class Account
+{
+private:
+	char accNum[50];
+	int balance;
+public:
+	Account(const char *number, int money)
+		: balance(money)
+	{
+		strcpy(accNum, number);
+	}
+	//¿‘±›
+	void Deposit(int money)	
+		throw (DepositException)	// πÆπ˝, ∞°µ∂º∫¿ª ¿ß«ÿ ªÁøÎ«‘
+	{
+		if (money < 0)
+		{
+			DepositException expn(money);
+			throw expn;
+		}
+		else
+			balance += money;
+	}
+	//√‚±›
+	void Withdraw(int money)
+		throw (WithdrawException)
+	{
+		if (balance < money)
+		{
+			WithdrawException expn(balance);
+			throw expn;
+		}
+		else
+			balance -= money;
+	}
+	//¿‹æ◊¡∂»∏
+	void ShowMyAccount()
+	{
+		cout << "¿‹æ◊ : " << balance << endl << endl;
+	}
+};
+
+
+
+///* øπø‹ ¥Ÿ ¡ﬂ ¿ß ¿” */
+//void SimpleFuncOne(void);
+//void SimpleFuncTwo(void);
+//void SimpleFuncThree(void);
+//
+//void SimpleFuncOne(void)
+//{
+//	cout << "SimpleFuncOne(void)" << endl;
+//	SimpleFuncTwo();
+//}
+//
+//void SimpleFuncTwo(void)
+//{
+//	cout << "SimpleFuncTwo(void)" << endl;
+//	SimpleFuncThree();
+//}
+//
+//void SimpleFuncThree(void)
+//{
+//	cout << "SimpleFuncThree(void)" << endl;
+//	throw - 1;
+//}
+
+
+/* øπø‹¿« ¿¸¥ﬁ(¿ß¿”) */
+//void Divide(int num1, int num2)
+//{
+//	if (num2 == 0)
+//		throw num2;
+//
+//	cout << "≥™¥∞º¿¿« ∏Ú : " << num1 / num2 << endl;
+//	cout << "≥™¥∞º¿¿« ≥™∏”¡ˆ : " << num1 % num2 << endl;
+//}
+
 
 
 //	class Second	: public First
@@ -191,7 +297,7 @@ return *this;
 //	}
 //};
 //
-//void ShowAllData(const BoundCheckIntArray &cpy)
+//void ShowAllData(const BoundCheckIntArray &cpy)//*******
 //{
 //	for (int i = 0; i < cpy.Getlen(); i++)
 //	{
@@ -201,6 +307,9 @@ return *this;
 
 /* øπø‹ √≥∏Æ - Exception Handling */
 
+
+
+/* øπø‹ ¥Ÿ ¡ﬂ ¿ß ¿” */
 
 int main(void)
 {
@@ -257,7 +366,7 @@ int main(void)
 	second.ShowData();
 	*/
 
-	/* πËø≠ ¿Œµ¶Ω∫ ø¨ªÍ¿⁄ ø¿πˆ∑Œµ˘ */
+	/* πËø≠ ¿Œµ¶Ω∫ ø¨ªÍ¿⁄ ø¿πˆ∑Œµ˘ - ∞¸∏Æ∞° µ«¥¬∞‘ ¿Áπ’æÓæﬂ */
 
 	//arrobject[2];
 
@@ -278,31 +387,6 @@ int main(void)
 	
 	//ShowAllData(arr);
 
-	/* øπø‹ √≥∏Æ - Exception Handling in C++ */
-	//try ∫Ì∑œ - øπ ø‹ πﬂ ∞ﬂ
-	//catch ∫Ì∑œ - øπ ø‹ √≥ ∏Æ
-	//throw ∫Ì∑œ - øπ ø‹ √≥ ∏Æ ¿ß ¿”
-	int num1, num2;
-	cout << "µŒ ∞≥¿« º˝¿⁄ ¿‘∑¬ : ";
-	cin >> num1 >> num2;		// øπ ø‹ πﬂ ª˝
-
-	try
-	{
-		if (num2 == 0)					// øπ ø‹ Æc
-			throw num2;
-		else
-		{
-			cout << "≥™¥∞º¿¿« ∏Ú : " << num1 / num2 << endl;
-			cout << "≥™¥∞º¿¿« ≥™∏”¡ˆ : " << num1 % num2 << endl;
-		}
-	}
-	catch(int expn)			// tryø°º≠ throw µ» µ•¿Ã≈Õ ≈∏¿‘¿∏∑Œ πﬁæ∆æﬂµ»¥Ÿ.
-	{
-		cout << "¡¶ºˆ¥¬ " << expn <<"¿Ã µ… ºˆ æ¯Ω¿¥œ¥Ÿ." << endl;
-		cout << "«¡∑Œ±◊∑• ∏ÆΩ∫≈∏∂«" << endl;
-	}
-	
-
 	/* øπø‹ √≥∏Æ - Exception Handling in C */
 	//int num1, num2;
 	//cout << "µŒ ∞≥¿« º˝¿⁄ ¿‘∑¬ : ";
@@ -319,5 +403,69 @@ int main(void)
 	//	cout << "≥™¥∞º¿¿« ≥™∏”¡ˆ : " << num1 % num2 << endl;
 
 	//}
+
+	/* øπø‹ √≥∏Æ - Exception Handling in C++ */
+	//try ∫Ì∑œ - øπ ø‹ πﬂ ∞ﬂ
+	//catch ∫Ì∑œ - øπ ø‹ √≥ ∏Æ
+	//throw ∫Ì∑œ - øπ ø‹ √≥ ∏Æ ¿ß ¿”
+	//int num1, num2;
+	//cout << "µŒ ∞≥¿« º˝¿⁄ ¿‘∑¬ : ";
+	//cin >> num1 >> num2;		// øπ ø‹ πﬂ ª˝
+
+	/* øπø‹¿« ¿¸¥ﬁ(¿ß¿”) */
+	
+	//try
+	//{
+	//	Divide(num1, num2);
+	//	//if (num2 == 0)					// øπ ø‹ Æc
+	//	//	throw num2;
+	//}
+	//catch (int expn)			// tryø°º≠ throw µ» µ•¿Ã≈Õ ≈∏¿‘¿∏∑Œ πﬁæ∆æﬂµ»¥Ÿ.
+	//{
+	//	cout << "¡¶ºˆ¥¬ " << expn << "¿Ã µ… ºˆ æ¯Ω¿¥œ¥Ÿ." << endl;
+	//	cout << "«¡∑Œ±◊∑• ∏ÆΩ∫≈∏∂«" << endl;
+	//}
+
+	/* øπø‹ ¥Ÿ ¡ﬂ ¿ß ¿” */
+// øπø‹∞° √≥∏Æµ«¡ˆ æ æ∆º≠, Exception ¿Ã main «‘ºˆ±Ó¡ˆ µµ¥ﬁ«ﬂ¥¬µ•, main«‘§µø°º≠ ¡∂¬˜ øπø‹∏¶ √≥∏Æ«œ¡ˆ æ ¿∏∏È
+//	 terminate »£√‚µ«∏Á≥ 
+
+//try
+//{
+//	SimpleFuncOne();
+//}
+//catch(int expn)
+//{
+//	cout << "[øπø‹ƒ⁄µÂ] << " << expn << endl;
+//
+//
+//}
+
+/*øπø‹ ≈¨∑°Ω∫∏¶ ¿ß«— øπø‹√≥∏Æ*/
+Account client1("123", 5000);
+
+try
+{
+	client1.Deposit(2000);
+	client1.Deposit(-300);
+}
+catch (DepositException &expn)
+{
+	expn.ShowExceptionReason();
+}
+
+try
+{
+	client1.Withdraw(1000);
+	client1.Withdraw(10000);
+}
+catch (WithdrawException &expn)
+{
+	expn.ShowExceptionReason();
+}
+
+client1.ShowMyAccount();
+
+
 	return 0;
 }
