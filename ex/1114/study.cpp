@@ -93,7 +93,7 @@ Person(int myAge, const char *myName)
 : age(myAge)
 {
 //		this->age = myAge;
-strcpy(name, myName);
+strcpy(name, myName);	// 배열로 생성해둬서 바로 복사
 }
 
 void WhatYourName() const
@@ -148,19 +148,18 @@ int main(void)
 	/*
 	상 속
 	- 목적
-	클래스 간 관계를 체계적으로 유지 및 관리하기 위해서 사용
-	(재사용성을 높이기 위해서)
+	클래스 간 관계를 체계적으로 유지 및 관리하기 위해서 사용	(재사용성을 높이기 위해서)
 	- 관계가 논리적으로 성립
 	- is A, has A
-	- is A
+	1. is A
 	(ex - 학생은 사람이다.)
 	(Student is a person.)
 	(ex - 노트북은 컴퓨터이다.)
 	(Notebook is a computer.)
-	- has A
+	2. has A
 	(ex - 경찰은 총을 가진다.)
 	(Police has a gun.)
-	/*is A
+	/*		is A
 	Student stu1(22, "KIM", "Computer Eng.");
 	stu1.WhoAreYou();
 
