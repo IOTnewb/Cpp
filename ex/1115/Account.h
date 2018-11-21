@@ -8,7 +8,7 @@ private:
 	int cash;
 	int ID;
 public:
-	Account(const char *name=NULL , int cash=0, int ID=0);
+	Account(const char *Cname=NULL , int cash=0, int ID=0);
 
 	Account(const Account &copy);
 

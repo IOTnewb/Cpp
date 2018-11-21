@@ -24,7 +24,6 @@ using namespace std;
 //		cout << "y : " << ypos << endl;
 //	}
 //};
-//
 ///* 배열을 저장하기 위한 포인터? */
 //class BoundCheckPointArray
 //{

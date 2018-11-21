@@ -29,7 +29,7 @@ void AccountManager::Register_Client()
 		cin >> MID;
 		for (int i = 0; i < count; i++)
 		{
-			if ( pt   GetID() == MID)
+			if ( pt->client[i].ID  == MID)
 			{
 				cout << "이미 존재하는 ID입니다." << endl;
 				except++;
