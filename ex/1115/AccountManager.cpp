@@ -146,6 +146,10 @@ void AccountManager::withDraw()
 				{
 					cout << "잘못된 값입니다.";
 				}
+				else if(list->Getclient()[i]->Getcash() - Wcash < 0)
+				{
+					cout << "잔액이 부족합니다." << endl;
+				}
 				else
 				{
 					(list->Getclient())[i]->SubCash(Wcash);

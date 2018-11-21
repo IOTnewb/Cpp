@@ -27,6 +27,10 @@ int Account::GetID()
 {
 	return ID;
 }
+int Account::Getcash()
+{
+	return cash;
+}
 
 void Account::upcash(int cashh)
 {

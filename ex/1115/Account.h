@@ -17,6 +17,8 @@ public:
 
 	int GetID();
 
+	int Getcash();
+
 	void upcash(int cashh);
 
 	void downcash(int cashh);
