@@ -1,5 +1,4 @@
 #pragma once
-#include "main.h"
 #include "Account.h"
 #include "HighCreditAccount.h"
 #include "NormalAccount.h"
@@ -7,7 +6,7 @@
 class AccountManager
 {
 private:
-	BoundCheckAccountArray *pt;
+	Account *client[100];
 	int count;
 	enum
 	{
@@ -33,22 +32,4 @@ public:
 	void PrintAllAccount();
 
 	void exit();
-};
-
-class BoundCheckAccountArray
-{
-private:
-	Account * client;
-	int count;
-public:
-	BoundCheckAccountArray(int num)
-		: count(num)
-	{
-		client = new Account[num];
-	}
-
-	~BoundCheckAccountArray()
-	{
-		delete[]client;
-	}
 };

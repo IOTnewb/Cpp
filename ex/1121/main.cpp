@@ -12,25 +12,6 @@ void printmenu()
 	cout << "¼±ÅÃ : ";
 }
 
-class BoundCheckAccountArray
-{
-private:
-	Account *client;
-	int count;
-public:
-	BoundCheckAccountArray(int num)
-		: count(num)
-	{
-		client = new Account[num];
-	}
-
-	~BoundCheckAccountArray()
-	{
-		delete[]client;
-	}
-};
-
-
 int main(void)
 {
 	AccountManager manager;
