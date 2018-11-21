@@ -4,11 +4,47 @@
 #include "HighCreditAccount.h"
 #include "NormalAccount.h"
 
+class BoundCheckAccountArray
+{
+private:
+	Account *client[100];
+	int count;
+public:
+	BoundCheckAccountArray()
+		: count(0)
+	{}
+
+	Account **Getclient()
+	{
+		return client;
+	}
+
+	void Addcount()
+	{
+		count++;
+	}
+
+	int Getcount()
+	{
+		return count;
+	}
+
+	~BoundCheckAccountArray()
+	{
+		for (int i = 0; i < count; i++)
+		{
+			delete client[i];
+		}
+
+	}
+};
+
+
 class AccountManager
 {
 private:
-	Account *client;
-	int count;
+	BoundCheckAccountArray *list;
+
 	enum
 	{
 		LEVEL_A = 1,
@@ -24,10 +60,6 @@ public:
 	AccountManager();
 	AccountManager(AccountManager &copy);
 
-	AccountManager address()
-	{
-	}
-
 	void Register_Client();
 
 	void deposit();
@@ -37,28 +69,5 @@ public:
 	void PrintAllAccount();
 
 	void exit();
-};
-
-class BoundCheckAccountArray
-{
-private:
-	AccountManager *list;
-	int count;
-public:
-	BoundCheckAccountArray(int num)
-		: count(num)
-	{
-		list = new AccountManager[num];
-	}
-
-	void CopyAccount(AccountManager &client)
-	{
-		list[count] = client;
-	}
-
-	~BoundCheckAccountArray()
-	{
-		delete[]list;
-	}
 };
 

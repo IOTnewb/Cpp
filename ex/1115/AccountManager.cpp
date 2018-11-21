@@ -1,11 +1,11 @@
 #include "AccountManager.h"
 
 AccountManager::AccountManager()
-	: count(0)
-{}
+{
+	list = new BoundCheckAccountArray();
+}
 
 AccountManager::AccountManager(AccountManager &copy)
-	: count(0)
 {}
 
 void AccountManager::Register_Client()
@@ -27,9 +27,9 @@ void AccountManager::Register_Client()
 		cout << "[일반계좌]" << endl;
 		cout << "계좌ID : ";
 		cin >> MID;
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < list->Getcount(); i++)
 		{
-			if ( client->GetID() == MID)
+			if ((list->Getclient())[i]->GetID() == MID)
 			{
 				cout << "이미 존재하는 ID입니다." << endl;
 				except++;
@@ -44,8 +44,8 @@ void AccountManager::Register_Client()
 			len = strlen(Mname);
 			nameptr = new char[len];
 			strcpy(nameptr, Mname);
-			client = new NormalAccount(nameptr, Mcash, MID, 0.75);
-			count++;
+			(list->Getclient())[list->Getcount()] = new NormalAccount(nameptr, Mcash, MID, 0.75);
+			list->Addcount();
 			cout << "개설되었습니다. " << endl;
 		}
 	}
@@ -54,9 +54,9 @@ void AccountManager::Register_Client()
 		cout << "[신용계좌]" << endl;
 		cout << "계좌ID : ";
 		cin >> MID;
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < list->Getcount(); i++)
 		{
-			if (client->GetID() == MID)
+			if ((list->Getclient())[i]->GetID() == MID)
 			{
 				cout << "이미 존재하는 ID입니다." << endl;
 				except++;
@@ -76,12 +76,12 @@ void AccountManager::Register_Client()
 			nameptr = new char[len];
 			strcpy(nameptr, Mname);
 			if (CreditLevel == LEVEL_A)
-				client= new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_A_RATIO);
+				(list->Getclient())[list->Getcount()] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_A_RATIO);
 			else if (CreditLevel == LEVEL_B)
-				client= new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_B_RATIO);
+				(list->Getclient())[list->Getcount()] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_B_RATIO);
 			else if (CreditLevel == LEVEL_C)
-				client= new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_C_RATIO);
-			count++;
+				(list->Getclient())[list->Getcount()] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_C_RATIO);
+			list->Addcount();
 			cout << "개설되었습니다. " << endl;
 		}
 	}
@@ -99,9 +99,9 @@ void AccountManager::deposit()
 	cout << "[입금]" << endl;
 	cout << "계좌ID : ";
 	cin >> DID;
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < list->Getcount(); i++)
 	{
-		if (DID == client->GetID())
+		if ((list->Getclient())[i]->GetID() == DID)
 		{
 			while (1)
 			{
@@ -113,7 +113,7 @@ void AccountManager::deposit()
 				}
 				else
 				{
-					client->AddCash(Dcash);
+					(list->Getclient())[i]->AddCash(Dcash);
 					cout << "입금완료 되었습니다." << endl;
 					break;
 				}
@@ -122,7 +122,7 @@ void AccountManager::deposit()
 		else
 			x++;
 	}
-	if (x == count)
+	if (x == list->Getcount())
 		cout << "존재하지 않는 ID입니다. " << endl << endl;
 }
 
@@ -134,9 +134,9 @@ void AccountManager::withDraw()
 	cout << "[출금]" << endl;
 	cout << "계좌ID : ";
 	cin >> WID;
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < list->Getcount(); i++)
 	{
-		if (WID == client->GetID())
+		if ((list->Getclient())[i]->GetID() == WID)
 		{
 			while (1)
 			{
@@ -148,7 +148,7 @@ void AccountManager::withDraw()
 				}
 				else
 				{
-					client->SubCash(Wcash);
+					(list->Getclient())[i]->SubCash(Wcash);
 					cout << "출금완료 되었습니다." << endl;
 					break;
 				}
@@ -157,25 +157,25 @@ void AccountManager::withDraw()
 		else
 			x++;
 	}
-	if (x == count)
+	if (x == list->Getcount())
 		cout << "존재하지 않는 ID입니다. " << endl << endl;
 }
 
 void AccountManager::PrintAllAccount()
 {
 	cout << "[전체 출력]" << endl;
-	cout << "개설된 전체 계좌 수 : " << count << endl;
+	cout << "개설된 전체 계좌 수 : " << list->Getcount() << endl;
 
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < list->Getcount(); i++)
 	{
-		client->PrintAccount();
+		(list->Getclient())[i]->PrintAccount();
 	}
 }
 
 void AccountManager::exit()
 {
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < list->Getcount(); i++)
 	{
-		delete client;
+		delete (list->Getclient())[i];
 	}
 }
