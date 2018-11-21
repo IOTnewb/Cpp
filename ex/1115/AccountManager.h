@@ -7,7 +7,7 @@
 class AccountManager
 {
 private:
-	BoundCheckAccountArray *pt;
+	Account *client;
 	int count;
 	enum
 	{
@@ -24,6 +24,10 @@ public:
 	AccountManager();
 	AccountManager(AccountManager &copy);
 
+	AccountManager address()
+	{
+	}
+
 	void Register_Client();
 
 	void deposit();
@@ -38,17 +42,23 @@ public:
 class BoundCheckAccountArray
 {
 private:
-	Account * client;
+	AccountManager *list;
 	int count;
 public:
 	BoundCheckAccountArray(int num)
 		: count(num)
 	{
-		client = new Account[num];
+		list = new AccountManager[num];
+	}
+
+	void CopyAccount(AccountManager &client)
+	{
+		list[count] = client;
 	}
 
 	~BoundCheckAccountArray()
 	{
-		delete[]client;
+		delete[]list;
 	}
 };
+

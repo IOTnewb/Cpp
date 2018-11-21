@@ -29,7 +29,7 @@ void AccountManager::Register_Client()
 		cin >> MID;
 		for (int i = 0; i < count; i++)
 		{
-			if ( pt->client[i].ID  == MID)
+			if ( client->GetID() == MID)
 			{
 				cout << "이미 존재하는 ID입니다." << endl;
 				except++;
@@ -44,7 +44,7 @@ void AccountManager::Register_Client()
 			len = strlen(Mname);
 			nameptr = new char[len];
 			strcpy(nameptr, Mname);
-			client[count] = new NormalAccount(nameptr, Mcash, MID, 0.75);
+			client = new NormalAccount(nameptr, Mcash, MID, 0.75);
 			count++;
 			cout << "개설되었습니다. " << endl;
 		}
@@ -56,7 +56,7 @@ void AccountManager::Register_Client()
 		cin >> MID;
 		for (int i = 0; i < count; i++)
 		{
-			if (client[i]->GetID() == MID)
+			if (client->GetID() == MID)
 			{
 				cout << "이미 존재하는 ID입니다." << endl;
 				except++;
@@ -76,11 +76,11 @@ void AccountManager::Register_Client()
 			nameptr = new char[len];
 			strcpy(nameptr, Mname);
 			if (CreditLevel == LEVEL_A)
-				client[count] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_A_RATIO);
+				client= new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_A_RATIO);
 			else if (CreditLevel == LEVEL_B)
-				client[count] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_B_RATIO);
+				client= new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_B_RATIO);
 			else if (CreditLevel == LEVEL_C)
-				client[count] = new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_C_RATIO);
+				client= new HighCreditAccount(nameptr, Mcash, MID, Mratio, LEVEL_C_RATIO);
 			count++;
 			cout << "개설되었습니다. " << endl;
 		}
@@ -101,7 +101,7 @@ void AccountManager::deposit()
 	cin >> DID;
 	for (int i = 0; i < count; i++)
 	{
-		if (DID == client[i]->GetID())
+		if (DID == client->GetID())
 		{
 			while (1)
 			{
@@ -113,7 +113,7 @@ void AccountManager::deposit()
 				}
 				else
 				{
-					client[i]->AddCash(Dcash);
+					client->AddCash(Dcash);
 					cout << "입금완료 되었습니다." << endl;
 					break;
 				}
@@ -136,7 +136,7 @@ void AccountManager::withDraw()
 	cin >> WID;
 	for (int i = 0; i < count; i++)
 	{
-		if (WID == client[i]->GetID())
+		if (WID == client->GetID())
 		{
 			while (1)
 			{
@@ -148,7 +148,7 @@ void AccountManager::withDraw()
 				}
 				else
 				{
-					client[i]->SubCash(Wcash);
+					client->SubCash(Wcash);
 					cout << "출금완료 되었습니다." << endl;
 					break;
 				}
@@ -168,7 +168,7 @@ void AccountManager::PrintAllAccount()
 
 	for (int i = 0; i < count; i++)
 	{
-		client[i]->PrintAccount();
+		client->PrintAccount();
 	}
 }
 
@@ -176,6 +176,6 @@ void AccountManager::exit()
 {
 	for (int i = 0; i < count; i++)
 	{
-		delete client[i];
+		delete client;
 	}
 }

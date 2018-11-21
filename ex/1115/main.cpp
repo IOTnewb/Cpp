@@ -12,29 +12,10 @@ void printmenu()
 	cout << "¼±ÅÃ : ";
 }
 
-class BoundCheckAccountArray
-{
-private:
-	Account *client;
-	int count;
-public:
-	BoundCheckAccountArray(int num)
-		: count(num)
-	{
-		client = new Account[num];
-	}
-
-	~BoundCheckAccountArray()
-	{
-		delete[]client;
-	}
-};
-
 
 int main(void)
 {
-	AccountManager manager;
-	AccountManager copy = manager;
+	BoundCheckAccountArray Array(100);
 	int sel;
 
 	while (1)
@@ -43,16 +24,16 @@ int main(void)
 		cin >> sel;
 
 		if (sel == 1)
-			copy.Register_Client();
+			Array.CopyAccount(Array.list->Register_Client());
 		else if (sel == 2)
-			copy.deposit();
+			Array.list->deposit();
 		else if (sel == 3)
-			copy.withDraw();
+			Array.list->withDraw();
 		else if (sel == 4)
-			copy.PrintAllAccount();
+			Array.list->PrintAllAccount();
 		else if (sel == 5)
 				{
-					copy.exit();
+			Array.list->exit();
 					break;
 				}
 		
