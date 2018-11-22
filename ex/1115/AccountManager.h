@@ -3,6 +3,7 @@
 #include "Account.h"
 #include "HighCreditAccount.h"
 #include "NormalAccount.h"
+#include "Exception.h"
 
 class BoundCheckAccountArray
 {
@@ -39,7 +40,6 @@ public:
 	}
 };
 
-
 class AccountManager
 {
 private:
@@ -62,9 +62,9 @@ public:
 
 	void Register_Client();
 
-	void deposit();
+	void deposit()	throw (DepositException);
 
-	void withDraw();
+	void withDraw()	throw (WithdrawException);
 
 	void PrintAllAccount();
 

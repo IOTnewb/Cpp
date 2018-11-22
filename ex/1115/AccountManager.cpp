@@ -91,6 +91,7 @@ void AccountManager::Register_Client()
 }
 
 void AccountManager::deposit()
+	throw (DepositException)
 {
 	int DID;
 	int Dcash;
@@ -107,17 +108,18 @@ void AccountManager::deposit()
 			{
 				cout << "입금액 : ";
 				cin >> Dcash;
-				if (Dcash < 0)
-				{
-					cout << "잘못된 값입니다.";
+					if (Dcash < 0)
+					{
+						DepositException expn(Dcash);
+						throw expn;
+					}
+					else
+					{
+						(list->Getclient())[i]->AddCash(Dcash);
+						cout << "입금완료 되었습니다." << endl;
+						break;
+					}
 				}
-				else
-				{
-					(list->Getclient())[i]->AddCash(Dcash);
-					cout << "입금완료 되었습니다." << endl;
-					break;
-				}
-			}
 		}
 		else
 			x++;
@@ -127,6 +129,7 @@ void AccountManager::deposit()
 }
 
 void AccountManager::withDraw()
+	throw (WithdrawException)
 {
 	int WID;
 	int Wcash;
@@ -142,20 +145,22 @@ void AccountManager::withDraw()
 			{
 				cout << "출금액 : ";
 				cin >> Wcash;
-				if (Wcash < 0)
-				{
-					cout << "잘못된 값입니다.";
-				}
-				else if(list->Getclient()[i]->Getcash() - Wcash < 0)
-				{
-					cout << "잔액이 부족합니다." << endl;
-				}
-				else
-				{
-					(list->Getclient())[i]->SubCash(Wcash);
-					cout << "출금완료 되었습니다." << endl;
-					break;
-				}
+					if (Wcash < 0)
+					{
+						WithdrawException expn(Wcash);
+						throw expn;
+					}
+					else if (list->Getclient()[i]->Getcash() - Wcash < 0)
+					{
+						WithdrawException expn(list->Getclient()[i]->Getcash());
+						throw expn;
+					}
+					else
+					{
+						(list->Getclient())[i]->SubCash(Wcash);
+						cout << "출금완료 되었습니다." << endl;
+						break;
+					}
 			}
 		}
 		else

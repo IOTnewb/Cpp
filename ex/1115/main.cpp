@@ -26,9 +26,35 @@ int main(void)
 		if (sel == 1)
 			manager.Register_Client();
 		else if (sel == 2)
-			manager.deposit();
-		else if (sel == 3)
-			manager.withDraw();
+		{
+			while(1)
+			{
+				try
+				{
+					manager.deposit();
+					break;
+				}
+				catch(DepositException &expn)
+				{
+					expn.ShowExceptionReason();
+				}
+			}
+		}
+		else if (sel == 3) 
+		{
+			while (1)
+			{
+				try
+				{
+					manager.withDraw();
+					break;
+				}
+				catch (WithdrawException &expn)
+				{
+					expn.ShowExceptionReason();
+				}
+			}
+		}
 		else if (sel == 4)
 			manager.PrintAllAccount();
 		else if (sel == 5)
