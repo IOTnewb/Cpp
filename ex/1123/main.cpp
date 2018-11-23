@@ -2,6 +2,57 @@
 #include <cstring>
 
 using namespace std;
+
+/* 5. 클래스 템플릿 */
+//- 배열을 위한 클래스를 템플릿화
+//- STL에서 자주씀
+
+
+
+
+/* 4. 템플릿의 특수화 */
+/*
+template <typename T>
+T Max(T a, T b)
+{
+	return a > b ? a : b;
+}
+
+template <>		// 템플릿 특수화
+char* Max(char* a, char* b)
+{
+	cout << "char* Max" << endl;
+	return strlen(a) > strlen(b) ? a : b;
+}
+
+template <>		// 템플릿 특수화
+const char* Max(const char* a, const char* b)
+{
+	cout << "const char* Max" << endl;
+	return strcmp(a, b) > 0 ? a : b;
+}
+
+int main(void)
+{
+	char str1[] = "Simple";
+	char str2[] = "Best";
+
+
+	// 기준이 명확한 경우,
+	cout << Max(11, 15) << endl;
+	cout << Max('t', 'q') << endl;
+	cout << Max(3.5, 10.1) << endl;
+
+	// 기준이 애매한 경우. 이에 맞게 특수화 시켜줘야 한다.
+	cout << Max(str1,str2) << endl;						// char*
+	cout << Max("Simple", "Best") << endl;			// const char*
+
+
+	return 0;
+}
+*/
+
+
 /* 3. 템플릿 (Template) */
 /*
 	- 뜻 : 형판 -> 모형자.
@@ -24,19 +75,46 @@ using namespace std;
 		return num1 + num2;
 	}
 
-*/
+
+template <class T1, class T2>
+void ShowData(double num)
+{
+	cout << (T1)num << ", " << (T2)num << endl;
+}
+
 template <typename T>
 
 T Add(T num1, T num2)
 {
+	cout << "T Add" << endl;
+	return num1 + num2;
+}
+
+int Add(int num1, int num2)
+{
+	cout << "Add" << endl;
 	return num1 + num2;
 }
 
 int main(void)
 {
+	//<int> : T를 int로 해서 만들어진 함수를 호출
+	//					=> template 함수를 호출
+	cout << Add<int>(15, 20) << endl;
+	cout << Add(15, 20) << endl;
+				//int Add(int num1, int num2)
+				//{
+				//	return num1 + num2;
+				//}
+	
+	cout << Add<double>(2.8, 7.4) << endl;
+
+	ShowData<char, int>(65);
 
 	return 0;
 }
+*/
+
 
 /*2. 사용자 정의 String class */
 /*
