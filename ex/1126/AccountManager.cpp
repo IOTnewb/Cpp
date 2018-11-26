@@ -5,8 +5,7 @@ AccountManager::AccountManager()
 	list = new BoundCheckAccountArray();
 }
 
-AccountManager::AccountManager(AccountManager &copy)
-{}
+AccountManager::AccountManager(AccountManager &copy){}
 
 void AccountManager::Register_Client()
 {
@@ -86,8 +85,6 @@ void AccountManager::Register_Client()
 		}
 	}
 	else;
-
-
 }
 
 void AccountManager::deposit()

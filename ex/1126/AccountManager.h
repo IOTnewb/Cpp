@@ -1,49 +1,15 @@
 #pragma once
-#include "main.h"
+#include "bankmain.h"
 #include "Account.h"
 #include "HighCreditAccount.h"
 #include "NormalAccount.h"
 #include "Exception.h"
-
-class BoundCheckAccountArray
-{
-private:
-	Account * client[100];
-	int count;
-public:
-	BoundCheckAccountArray()
-		: count(0)
-	{}
-
-	Account **Getclient()
-	{
-		return client;
-	}
-
-	void Addcount()
-	{
-		count++;
-	}
-
-	int Getcount()
-	{
-		return count;
-	}
-
-	~BoundCheckAccountArray()
-	{
-		for (int i = 0; i < count; i++)
-		{
-			delete client[i];
-		}
-
-	}
-};
+#include "BoundCheck.h"
 
 class AccountManager
 {
 private:
-	BoundCheckAccountArray * list;
+	BoundCheckAccountArray *list;
 
 	enum
 	{
@@ -61,13 +27,9 @@ public:
 	AccountManager(AccountManager &copy);
 
 	void Register_Client();
-
 	void deposit()	throw (DepositException);
-
 	void withDraw()	throw (WithdrawException);
-
 	void PrintAllAccount();
-
 	void exit();
 };
 

@@ -15,10 +15,7 @@ void NormalAccount::PrintAccount() const
 	cout << "Ratio : " << basicRatio << "%" << endl;
 }
 
-double NormalAccount::GetRatio() const
-{
-	return basicRatio;
-}
+double NormalAccount::GetRatio() const {	return basicRatio;}
 
 void NormalAccount::AddCash(int add_cash)
 {

@@ -23,34 +23,10 @@ void Account::PrintAccountInfo() const
 	cout << "ภÜพื : " << cash << endl;
 }
 
-int Account::GetID()
-{
-	return ID;
-}
-int Account::Getcash()
-{
-	return cash;
-}
-
-void Account::upcash(int cashh)
-{
-	cash += cashh;
-}
-
-void Account::downcash(int cashh)
-{
-	cash -= cashh;
-}
-
-void Account::AddCash(int add_cash)
-{
-}
-
-void Account::SubCash(int sub_cash)
-{
-}
-
-void Account::PrintAccount() const
-{
-
-}
+int Account::GetID(){	return ID;}
+int Account::Getcash(){	return cash;}
+void Account::upcash(int cashh){	cash += cashh;}
+void Account::downcash(int cashh){	cash -= cashh;}
+void Account::AddCash(int add_cash){}
+void Account::SubCash(int sub_cash){}
+void Account::PrintAccount() const{}

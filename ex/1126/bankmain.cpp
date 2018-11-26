@@ -1,4 +1,4 @@
-#include "main.h"
+#include "bankmain.h"
 #include "AccountManager.h"
 
 void printmenu()
@@ -15,7 +15,6 @@ void printmenu()
 int main(void)
 {
 	AccountManager manager;
-	AccountManager copy = manager;
 	int sel;
 
 	while (1)
@@ -62,7 +61,6 @@ int main(void)
 			manager.exit();
 			break;
 		}
-
 	}
 	return 0;
 }
